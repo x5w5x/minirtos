@@ -22,6 +22,7 @@ typedef struct os_tcb_t{
     os_list_node_t list_node;
     uint8_t priority;
     os_task_state_t state;
+    uint32_t ticks_to_delay;
 }os_tcb_t;
 #define OS_TCB_FROM_NODE(node_ptr) \
     ((os_tcb_t *)((uint8_t *)(node_ptr)-offsetof(os_tcb_t,list_node)))
@@ -38,4 +39,7 @@ void os_task_create(os_tcb_t *tcb,
 void os_task_ready(os_tcb_t *tcb);
 void os_sched(void);
 void os_start(void);
+void os_delay(uint32_t ticks);
+void os_tick_handler(void);
+void os_idle_task(void *param);
 #endif // DEBUG
