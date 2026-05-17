@@ -1,3 +1,9 @@
+/*
+ * @Author: 轩
+ * @Date: 2026-05-17 11:34:46
+ * @LastEditTime: 2026-05-17 14:55:02
+ * @FilePath: \minirtos\User\stm32f10x_it.h
+ */
 /**
   ******************************************************************************
   * @file    Project/STM32F10x_StdPeriph_Template/stm32f10x_it.h 
@@ -42,7 +48,7 @@ void BusFault_Handler(void);
 void UsageFault_Handler(void);
 void SVC_Handler(void);
 void DebugMon_Handler(void);
-void PendSV_Handler(void);
+// void PendSV_Handler(void);
 void SysTick_Handler(void);
 
 #ifdef __cplusplus

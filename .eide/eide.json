@@ -3,7 +3,7 @@
   "type": "ARM",
   "dependenceList": [],
   "srcDirs": [
-    "led"
+    "minirtos"
   ],
   "virtualFolder": {
     "name": "<virtual_root>",
@@ -203,6 +203,12 @@
           },
           {
             "path": "System/Delay.h"
+          },
+          {
+            "path": "System/Serial.c"
+          },
+          {
+            "path": "System/Serial.h"
           }
         ],
         "folders": []
@@ -373,20 +379,9 @@
           "Library",
           "System",
           ".cmsis/include",
-          "RTE/_Target 1",
-          "led/config",
-          "led/core",
-          "led/drivers",
-          "led/utils",
-          "led/test",
-          "led/hal"
+          "RTE/_Target 1"
         ],
-        "libList": [
-          "led/config",
-          "led/core",
-          "led/drivers",
-          "led/utils"
-        ],
+        "libList": [],
         "defineList": [
           "USE_STDPERIPH_DRIVER",
           "STM32F10X_MD"

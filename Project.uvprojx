@@ -335,7 +335,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>.\Start;.\User;.\Library;.\System</IncludePath>
+              <IncludePath>.\Start;.\User;.\Library;.\System;.\minirtos;.\System</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -408,6 +408,31 @@
               <FileName>system_stm32f10x.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Start\system_stm32f10x.h</FilePath>
+            </File>
+            <File>
+              <FileName>mini_rtos.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\minirtos\mini_rtos.h</FilePath>
+            </File>
+            <File>
+              <FileName>os_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\minirtos\os_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>os_port.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\minirtos\os_port.s</FilePath>
+            </File>
+            <File>
+              <FileName>Serial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\System\Serial.c</FilePath>
+            </File>
+            <File>
+              <FileName>Serial.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\System\Serial.h</FilePath>
             </File>
           </Files>
         </Group>
