@@ -335,7 +335,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>.\Start;.\User;.\Library;.\System;.\minirtos;.\System</IncludePath>
+              <IncludePath>.\Start;.\User;.\Library;.\System;.\minirtos;.\System;.\OS_Port;.\OS_Core</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -433,6 +433,16 @@
               <FileName>Serial.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\System\Serial.h</FilePath>
+            </File>
+            <File>
+              <FileName>os_core.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\OS_Core\os_core.h</FilePath>
+            </File>
+            <File>
+              <FileName>os_list.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\OS_Core\os_list.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -693,6 +703,26 @@
               <FileName>stm32f10x_it.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\User\stm32f10x_it.h</FilePath>
+            </File>
+            <File>
+              <FileName>os_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\OS_Core\os_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>os_core.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\OS_Core\os_core.h</FilePath>
+            </File>
+            <File>
+              <FileName>os_list.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\OS_Core\os_list.h</FilePath>
+            </File>
+            <File>
+              <FileName>os_port.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\OS_Port\os_port.s</FilePath>
             </File>
           </Files>
         </Group>

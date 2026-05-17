@@ -3,7 +3,9 @@
   "type": "ARM",
   "dependenceList": [],
   "srcDirs": [
-    "minirtos"
+    "minirtos",
+    "OS_Core",
+    "OS_Port"
   ],
   "virtualFolder": {
     "name": "<virtual_root>",

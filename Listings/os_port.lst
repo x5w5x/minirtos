@@ -8,73 +8,47 @@ ARM Macro Assembler    Page 1
 2
     2 00000000                 THUMB
     3 00000000         
-    4 00000000                 IMPORT           CurrentTask
-    5 00000000                 IMPORT           ReadyBitMap
-    6 00000000                 IMPORT           ReadyQueue
+    4 00000000                 IMPORT           os_current_task
+    5 00000000                 IMPORT           os_next_task
+    6 00000000         
     7 00000000                 EXPORT           PendSV_Handler
     8 00000000         
     9 00000000         PendSV_Handler
    10 00000000 F3EF 8009       MRS              R0,   PSP
-   11 00000004         
-   12 00000004         ; ======= 【新增终极防御】判断是不是第一�
-                       ��启动？ =======
-   13 00000004 2800            CMP              R0,   #0    ; 判断 PSP 探针
-                                                            读出来是不是 
-                                                            0
-   14 00000006 D004            BEQ              Switch_Task ; 如果是 0 (Equa
-                                                            l)，说明是第�
-                                                            �次启动，跳过
-                                                            老任务存档！
-   15 00000008         
-   16 00000008         ; ======= 第一幕：老任务现场保存 (非第一�
-                       �才执行) =======
-   17 00000008 E920 0FF0       STMDB            R0!,  {R4-R11}
-   18 0000000C 490B            LDR              R1,   =CurrentTask
-   19 0000000E 6809            LDR              R1,   [R1]
-   20 00000010 6008            STR              R0,   [R1]
-   21 00000012         
-   22 00000012         Switch_Task                          ; 【新增标签�
-                                                            �这里是切换动
-                                                            作的起点
-   23 00000012         ; ======= 第二幕：纯汇编全自动切换聚光灯 
-                       =======
-   24 00000012 4A0B            LDR              R2,   =ReadyBitMap
-   25 00000014 6812            LDR              R2,   [R2]
-   26 00000016 FAB2 F282       CLZ              R2,   R2
-   27 0000001A F1C2 021F       RSB              R2,   R2,   #31
-   28 0000001E         
-   29 0000001E 4B09            LDR              R3,   =ReadyQueue
-   30 00000020 F853 3022       LDR              R3,   [R3, R2, LSL #2]
-   31 00000024         
-   32 00000024 4905            LDR              R1,   =CurrentTask
-   33 00000026 600B            STR              R3,   [R1]
-   34 00000028         
-   35 00000028         ; ======= 第三幕：新任务现场恢复 =======
-   36 00000028 4904            LDR              R1,   =CurrentTask
-   37 0000002A 6809            LDR              R1,   [R1]
-   38 0000002C 6808            LDR              R0,   [R1]
-   39 0000002E         
-   40 0000002E E8B0 0FF0       LDMIA            R0!,  {R4-R11}
-   41 00000032 F380 8809       MSR              PSP,  R0
-   42 00000036 F06F 0E02       LDR              LR,   =0xFFFFFFFD
-   43 0000003A 4770            BX               LR
-   44 0000003C         
-   45 0000003C                 ALIGN
-   46 0000003C                 END
+   11 00000004 2800            CMP              R0,   #0
+   12 00000006 D004            BEQ              Switch_Task
+   13 00000008         
+   14 00000008 E920 0FF0       STMDB            R0!,  {R4-R11}
+   15 0000000C 4908            LDR              R1,   =os_current_task
+   16 0000000E 680A            LDR              R2,   [R1]
+   17 00000010 6010            STR              R0,   [R2]
+   18 00000012         
+   19 00000012         Switch_Task
+   20 00000012         
+   21 00000012 4907            LDR              R1,   =os_current_task
+   22 00000014 4A07            LDR              R2,   =os_next_task
+   23 00000016 6813            LDR              R3,   [R2]
+   24 00000018 600B            STR              R3,   [R1]
+   25 0000001A         
+   26 0000001A         
+   27 0000001A 4905            LDR              R1,   =os_current_task
+   28 0000001C 680A            LDR              R2,   [R1]
+   29 0000001E 6810            LDR              R0,   [R2]
+   30 00000020         
+   31 00000020 E8B0 0FF0       LDMIA            R0!,  {R4-R11}
+   32 00000024 F380 8809       MSR              PSP,  R0
+   33 00000028 F06F 0E02       LDR              LR,   =0xFFFFFFFD
+   34 0000002C 4770            BX               LR
+   35 0000002E         
+   36 0000002E 00 00           ALIGN
+   37 00000030                 END
               00000000 
-              00000000 
-
-
-
-ARM Macro Assembler    Page 2 
-
-
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
-ork --depend=.\objects\os_port.d -o.\objects\os_port.o -I.\RTE\_Target_1 -IC:\K
-eil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include -IC:\Keil_v5\ARM\CMSIS\
-Include --predefine="__UVISION_VERSION SETA 523" --predefine="STM32F10X_MD SETA
- 1" --list=.\listings\os_port.lst minirtos\os_port.s
+ork --depend=.\objects\os_port_1.d -o.\objects\os_port_1.o -I.\RTE\_Target_1 -I
+C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include -IC:\Keil_v5\ARM\CM
+SIS\Include --predefine="__UVISION_VERSION SETA 523" --predefine="STM32F10X_MD 
+SETA 1" --list=.\listings\os_port.lst OS_Port\os_port.s
 
 
 
@@ -85,7 +59,7 @@ Relocatable symbols
 
 Symbol: .text
    Definitions
-      At line 1 in file minirtos\os_port.s
+      At line 1 in file OS_Port\os_port.s
    Uses
       None
 Comment: .text unused
@@ -93,17 +67,17 @@ PendSV_Handler 00000000
 
 Symbol: PendSV_Handler
    Definitions
-      At line 9 in file minirtos\os_port.s
+      At line 9 in file OS_Port\os_port.s
    Uses
-      At line 7 in file minirtos\os_port.s
+      At line 7 in file OS_Port\os_port.s
 Comment: PendSV_Handler used once
 Switch_Task 00000012
 
 Symbol: Switch_Task
    Definitions
-      At line 22 in file minirtos\os_port.s
+      At line 19 in file OS_Port\os_port.s
    Uses
-      At line 14 in file minirtos\os_port.s
+      At line 12 in file OS_Port\os_port.s
 Comment: Switch_Task used once
 3 symbols
 
@@ -112,31 +86,23 @@ Comment: Switch_Task used once
 ARM Macro Assembler    Page 1 Alphabetic symbol ordering
 External symbols
 
-CurrentTask 00000000
+os_current_task 00000000
 
-Symbol: CurrentTask
+Symbol: os_current_task
    Definitions
-      At line 4 in file minirtos\os_port.s
+      At line 4 in file OS_Port\os_port.s
    Uses
-      At line 18 in file minirtos\os_port.s
-      At line 32 in file minirtos\os_port.s
-      At line 36 in file minirtos\os_port.s
+      At line 15 in file OS_Port\os_port.s
+      At line 21 in file OS_Port\os_port.s
+      At line 27 in file OS_Port\os_port.s
 
-ReadyBitMap 00000000
+os_next_task 00000000
 
-Symbol: ReadyBitMap
+Symbol: os_next_task
    Definitions
-      At line 5 in file minirtos\os_port.s
+      At line 5 in file OS_Port\os_port.s
    Uses
-      At line 24 in file minirtos\os_port.s
-Comment: ReadyBitMap used once
-ReadyQueue 00000000
-
-Symbol: ReadyQueue
-   Definitions
-      At line 6 in file minirtos\os_port.s
-   Uses
-      At line 29 in file minirtos\os_port.s
-Comment: ReadyQueue used once
-3 symbols
-340 symbols in table
+      At line 22 in file OS_Port\os_port.s
+Comment: os_next_task used once
+2 symbols
+339 symbols in table
