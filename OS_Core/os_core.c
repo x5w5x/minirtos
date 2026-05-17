@@ -49,7 +49,8 @@ void os_sched(void)
     }
     next_task->state=OS_TASK_STATE_RUNNING;
     os_next_task=next_task;
-    SCB->ICSR |=(1<<28);
+    SCB->ICSR |=(1<<28);  //触发上下文切换
+    
     // while(1);
 
 }

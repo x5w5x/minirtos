@@ -5,8 +5,8 @@
  * @FilePath: \minirtos\User\main.c
  */
 #include "stm32f10x.h"
-//#include "OS_Core/os_core.h"
-#include "os_core.h"
+#include "OS_Core/os_core.h"
+// #include "os_core.h"
 // 1. 准备测试变量
 volatile uint32_t countA = 0;
 volatile uint32_t countB = 0;
