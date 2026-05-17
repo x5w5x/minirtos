@@ -1,0 +1,27 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "files.associations": {
+            "*.py": "python",
+            "delay.h": "c",
+            "config_led.h": "c",
+            "led_core.h": "c",
+            "led_hal.h": "c",
+            "led_base.h": "c",
+            "led_manager.h": "c",
+            "led_event.h": "c",
+            "stm32f10x.h": "c",
+            "compiler.h": "c",
+            "hal_gpio.h": "c",
+            "hal_pwm.h": "c",
+            "pwm_led.h": "c",
+            "led_driver.h": "c"
+        },
+        "EIDE.OpenOCD.ExePath": "E:\\elaphurelink-openocd-win32-x64\\bin\\openocd.exe"
+    },
+    "extensions": {}
+}
