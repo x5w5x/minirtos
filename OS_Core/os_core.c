@@ -124,3 +124,39 @@ void os_tick_handler(void)
 
     os_sched();
 }
+
+// ==================== 信号量 ====================
+
+void os_sem_init(os_sem_t *sem, uint8_t value)
+{
+    sem->count          = value;
+    sem->wait_node.prev = &sem->wait_node;
+    sem->wait_node.next = &sem->wait_node;
+}
+
+void os_sem_take(os_sem_t *sem)
+{
+    if (sem->count > 0) {
+        sem->count--;
+    } else {
+        os_list_remove(&os_current_task->list_node);
+
+        os_list_add(&sem->wait_node, &os_current_task->list_node);
+
+        os_sched();
+    }
+}
+
+void os_sem_give(os_sem_t *sem)
+{
+    if (!(os_list_is_empty(sem))) {
+        os_list_node_t *node = sem->wait_node.next;
+        os_list_remove(node);
+        os_tcb_t *task = (os_tcb_t *)node;
+        os_task_ready(task);
+
+        os_sched();
+    }else{
+        sem->count=1; 
+    }
+}

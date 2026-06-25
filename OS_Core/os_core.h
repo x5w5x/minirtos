@@ -1,48 +1,56 @@
 /*
  * @Author: 轩
  * @Date: 2026-05-17 16:16:17
- * @LastEditTime: 2026-06-25 20:31:12
+ * @LastEditTime: 2026-06-25 21:40:51
  * @FilePath: \minirtos\OS_Core\os_core.h
  */
 #ifndef OS_CORE_H
 #define OS_CORE_H
 
-#include<stdint.h>
-#include"os_list.h"
+#include <stdint.h>
+#include "os_list.h"
 #include <stddef.h>
-typedef enum{
-    OS_TASK_STATE_READY=0,
+typedef enum {
+    OS_TASK_STATE_READY = 0,
     OS_TASK_STATE_RUNNING,
     OS_TASK_STATE_BLOCKED,
     OS_TASK_STATE_SUSPENDED
-}os_task_state_t;
+} os_task_state_t;
 
-typedef struct os_tcb_t{
+typedef struct os_tcb_t {
     uint32_t *stack_ptr;
     os_list_node_t list_node;
     uint8_t priority;
     os_task_state_t state;
     uint32_t ticks_to_delay;
 
-    uint32_t time_slice_reload; //初始时间片
-    uint32_t time_slice; //剩余时间片
-}os_tcb_t;
+    uint32_t time_slice_reload; // 初始时间片
+    uint32_t time_slice;        // 剩余时间片
+} os_tcb_t;
+
+typedef struct {
+    uint8_t count;
+    os_list_node_t wait_node;
+} os_sem_t;
+
 #define OS_TCB_FROM_NODE(node_ptr) \
-    ((os_tcb_t *)((uint8_t *)(node_ptr)-offsetof(os_tcb_t,list_node)))
+    ((os_tcb_t *)((uint8_t *)(node_ptr) - offsetof(os_tcb_t, list_node)))
 
-
-    // ==================== 核心组件 API 声明 ====================
+// ==================== 核心组件 API 声明 ====================
 void os_sched_init(void);
-void os_task_create(os_tcb_t *tcb, 
-                    void (*task_func)(void *), 
-                    void *param, 
-                    uint32_t *stack_base, 
-                    uint32_t stack_size, 
-                    uint8_t prio,uint32_t time_slice);
+void os_task_create(os_tcb_t *tcb,
+                    void (*task_func)(void *),
+                    void *param,
+                    uint32_t *stack_base,
+                    uint32_t stack_size,
+                    uint8_t prio, uint32_t time_slice);
 void os_task_ready(os_tcb_t *tcb);
 void os_sched(void);
 void os_start(void);
 void os_delay(uint32_t ticks);
 void os_tick_handler(void);
 void os_idle_task(void *param);
+
+// ==================== 信号量 ====================
+void os_sem_init(os_sem_t *sem,uint8_t value);
 #endif // DEBUG
