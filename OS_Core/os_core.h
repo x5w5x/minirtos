@@ -1,7 +1,7 @@
 /*
  * @Author: 轩
  * @Date: 2026-05-17 16:16:17
- * @LastEditTime: 2026-05-17 17:25:21
+ * @LastEditTime: 2026-06-25 20:31:12
  * @FilePath: \minirtos\OS_Core\os_core.h
  */
 #ifndef OS_CORE_H
@@ -23,6 +23,9 @@ typedef struct os_tcb_t{
     uint8_t priority;
     os_task_state_t state;
     uint32_t ticks_to_delay;
+
+    uint32_t time_slice_reload; //初始时间片
+    uint32_t time_slice; //剩余时间片
 }os_tcb_t;
 #define OS_TCB_FROM_NODE(node_ptr) \
     ((os_tcb_t *)((uint8_t *)(node_ptr)-offsetof(os_tcb_t,list_node)))
@@ -35,7 +38,7 @@ void os_task_create(os_tcb_t *tcb,
                     void *param, 
                     uint32_t *stack_base, 
                     uint32_t stack_size, 
-                    uint8_t prio);
+                    uint8_t prio,uint32_t time_slice);
 void os_task_ready(os_tcb_t *tcb);
 void os_sched(void);
 void os_start(void);

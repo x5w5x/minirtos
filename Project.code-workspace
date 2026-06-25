@@ -19,7 +19,9 @@
             "hal_gpio.h": "c",
             "hal_pwm.h": "c",
             "pwm_led.h": "c",
-            "led_driver.h": "c"
+            "led_driver.h": "c",
+            "os_core.h": "c",
+            "os_list.h": "c"
         },
         "EIDE.OpenOCD.ExePath": "E:\\elaphurelink-openocd-win32-x64\\bin\\openocd.exe"
     },

@@ -1,7 +1,7 @@
 /*
  * @Author: 轩
- * @Date: 2026-02-06 19:12:36
- * @LastEditTime: 2026-05-17 19:07:11
+ * @Date: 2026-05-17 11:34:46
+ * @LastEditTime: 2026-06-25 21:10:30
  * @FilePath: \minirtos\User\main.c
  */
 #include "stm32f10x.h"
@@ -29,7 +29,7 @@ void TaskA(void *param)
     while (1)
     {
         countA++;  
-        os_delay(1000);
+        //os_delay(1000);
     }
 }
 
@@ -38,7 +38,7 @@ void TaskB(void *param)
     while (1)
     {
         countB++;
-        os_delay(1000); 
+        //os_delay(1000); 
     }
 }
 
@@ -46,8 +46,8 @@ int main(void)
 {
     SysTick_Config(SystemCoreClock / 1000);
     os_sched_init();
-    os_task_create(&TaskA_TCB, TaskA, NULL, TaskA_Stack, 64, 1);
-    os_task_create(&TaskB_TCB, TaskB, NULL, TaskB_Stack, 64, 1);
+    os_task_create(&TaskA_TCB, TaskA, NULL, TaskA_Stack, 64, 1,1);
+    os_task_create(&TaskB_TCB, TaskB, NULL, TaskB_Stack, 64, 1,1);
     os_task_ready(&TaskA_TCB);
     os_task_ready(&TaskB_TCB);
 
