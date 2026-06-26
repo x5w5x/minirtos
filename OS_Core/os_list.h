@@ -29,7 +29,7 @@ static inline void os_list_add(os_list_node_t *head, os_list_node_t *node)
     head->prev->next=node;
     head->prev=node;
 }
-static inline os_list_is_empty(os_list_node_t *head)
+static inline uint8_t os_list_is_empty(os_list_node_t *head)
 {
     return head->next==head;
 }

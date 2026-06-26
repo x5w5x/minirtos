@@ -1,7 +1,7 @@
 /*
  * @Author: 轩
  * @Date: 2026-05-17 16:16:17
- * @LastEditTime: 2026-06-25 21:40:51
+ * @LastEditTime: 2026-06-26 13:07:03
  * @FilePath: \minirtos\OS_Core\os_core.h
  */
 #ifndef OS_CORE_H
@@ -36,6 +36,10 @@ typedef struct {
 #define OS_TCB_FROM_NODE(node_ptr) \
     ((os_tcb_t *)((uint8_t *)(node_ptr) - offsetof(os_tcb_t, list_node)))
 
+#define offset_of(type, member) ((uint32_t)&(((type*)0)->member))  
+
+#define container_of(ptr, type, member) ((type*)((char*)(ptr)-offset_of(type,member)))
+
 // ==================== 核心组件 API 声明 ====================
 void os_sched_init(void);
 void os_task_create(os_tcb_t *tcb,
@@ -53,4 +57,6 @@ void os_idle_task(void *param);
 
 // ==================== 信号量 ====================
 void os_sem_init(os_sem_t *sem,uint8_t value);
+void os_sem_take(os_sem_t *sem);
+void os_sem_give(os_sem_t *sem);
 #endif // DEBUG

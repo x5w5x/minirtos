@@ -139,8 +139,11 @@ void os_sem_take(os_sem_t *sem)
     if (sem->count > 0) {
         sem->count--;
     } else {
+        // os_current_task->state          = OS_TASK_STATE_BLOCKED;
         os_list_remove(&os_current_task->list_node);
 
+        if (os_list_is_empty(&os_ready_queue[os_current_task->priority]))
+            os_ready_bitmap &= ~(0x01 << os_current_task->priority);
         os_list_add(&sem->wait_node, &os_current_task->list_node);
 
         os_sched();
@@ -149,14 +152,14 @@ void os_sem_take(os_sem_t *sem)
 
 void os_sem_give(os_sem_t *sem)
 {
-    if (!(os_list_is_empty(sem))) {
+    if (!(os_list_is_empty(&sem->wait_node))) {
         os_list_node_t *node = sem->wait_node.next;
         os_list_remove(node);
-        os_tcb_t *task = (os_tcb_t *)node;
+        os_tcb_t *task = container_of(node, os_tcb_t, list_node);
         os_task_ready(task);
 
         os_sched();
-    }else{
-        sem->count=1; 
+    } else {
+        sem->count = 1;
     }
 }
