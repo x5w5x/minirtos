@@ -1,7 +1,7 @@
 /*
  * @Author: 轩
  * @Date: 2026-05-17 16:16:17
- * @LastEditTime: 2026-06-26 14:52:19
+ * @LastEditTime: 2026-06-26 20:59:22
  * @FilePath: \minirtos\OS_Core\os_core.h
  */
 #ifndef OS_CORE_H
@@ -40,12 +40,25 @@ typedef struct {
     os_list_node_t wait_node;
 } os_mutex_t;
 
+typedef struct {
+    uint8_t *msg_pool;
+    uint16_t msg_size;
+    uint16_t max_msg;
+
+    uint16_t msg_count;
+    uint16_t head; // 读索引
+    uint16_t tail; // 写索引
+
+    os_list_node_t wait_node;
+
+} os_msg_queue_t;
+
 #define OS_TCB_FROM_NODE(node_ptr) \
     ((os_tcb_t *)((uint8_t *)(node_ptr) - offsetof(os_tcb_t, list_node)))
 
-#define offset_of(type, member) ((uint32_t)&(((type*)0)->member))  
+#define offset_of(type, member)         ((uint32_t)&(((type *)0)->member))
 
-#define container_of(ptr, type, member) ((type*)((char*)(ptr)-offset_of(type,member)))
+#define container_of(ptr, type, member) ((type *)((char *)(ptr) - offset_of(type, member)))
 
 // ==================== 核心组件 API 声明 ====================
 void os_sched_init(void);
@@ -63,11 +76,15 @@ void os_tick_handler(void);
 void os_idle_task(void *param);
 
 // ==================== 信号量 ====================
-void os_sem_init(os_sem_t *sem,uint8_t value);
+void os_sem_init(os_sem_t *sem, uint8_t value);
 void os_sem_take(os_sem_t *sem);
 void os_sem_give(os_sem_t *sem);
 // ==================== 互斥锁 ====================
 void os_mutex_init(os_mutex_t *mutex);
 void os_mutex_take(os_mutex_t *mutex);
 void os_mutex_give(os_mutex_t *mutex);
+// ==================== 消息队列 ====================
+void os_msg_init(os_msg_queue_t *msg, uint8_t *pool, uint16_t msg_size, uint16_t max_msg);
+void os_msg_send(os_msg_queue_t *msg, void *data);
+void os_msg_recv(os_msg_queue_t *msg, void *data);
 #endif // DEBUG

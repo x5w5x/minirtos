@@ -31,3 +31,4 @@
 .\objects\os_core_1.o: .\Library\stm32f10x_usart.h
 .\objects\os_core_1.o: .\Library\stm32f10x_wwdg.h
 .\objects\os_core_1.o: .\Library\misc.h
+.\objects\os_core_1.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

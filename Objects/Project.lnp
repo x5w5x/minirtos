@@ -5,6 +5,8 @@
 ".\objects\os_core.o"
 ".\objects\os_port.o"
 ".\objects\serial.o"
+".\objects\segger_rtt.o"
+".\objects\segger_rtt_printf.o"
 ".\objects\misc.o"
 ".\objects\stm32f10x_adc.o"
 ".\objects\stm32f10x_bkp.o"

@@ -1,6 +1,6 @@
 #include "os_core.h"
 #include "stm32f10x.h"
-
+#include "string.h"
 os_list_node_t os_delay_list_head;
 os_tcb_t os_idle_task_tcb;
 uint32_t os_idle_task_stack[64];
@@ -215,10 +215,62 @@ void os_mutex_give(os_mutex_t *mutex)
         os_list_remove(node);
         os_tcb_t *task = container_of(node, os_tcb_t, list_node);
         os_task_ready(task);
-        mutex->owner=task;
-        mutex->original_pri=task->priority;
+        mutex->owner        = task;
+        mutex->original_pri = task->priority;
         os_sched();
-    }else{
-        mutex->lock=0;
+    } else {
+        mutex->lock = 0;
     }
+}
+
+// ==================== 消息队列 ====================
+
+void os_msg_init(os_msg_queue_t *msg, uint8_t *pool, uint16_t msg_size, uint16_t max_msg)
+{
+    msg->msg_pool = pool;
+    msg->msg_size = msg_size;
+    msg->max_msg  = max_msg;
+
+    msg->msg_count = 0;
+    msg->head      = 0;
+    msg->tail      = 0;
+    os_list_init(&msg->wait_node);
+}
+void os_msg_send(os_msg_queue_t *msg, void *data)
+{
+    if (msg->msg_count >= msg->max_msg)
+        return;
+
+    uint8_t *dest = msg->msg_pool + (msg->tail * msg->msg_size);
+
+    memcpy(dest, data, msg->msg_size);
+
+    msg->tail = (msg->tail + 1) % msg->max_msg;
+
+    msg->msg_count++;
+    if (!os_list_is_empty(&msg->wait_node)) {
+        os_list_node_t *node = msg->wait_node.next;
+        os_list_remove(node);
+        os_tcb_t *task = container_of(node, os_tcb_t, list_node);
+        os_task_ready(task);
+        os_sched();
+    }
+}
+
+void os_msg_recv(os_msg_queue_t *msg, void *data)
+{
+    if (msg->msg_count == 0) {
+        os_current_task->state = OS_TASK_STATE_BLOCKED;
+        os_list_remove(&os_current_task->list_node);
+        if (os_list_is_empty(&os_ready_queue[os_current_task->priority]))
+            os_ready_bitmap &= ~(0x01 << os_current_task->priority);
+        os_list_add(&msg->wait_node, &os_current_task->list_node);
+        os_sched();
+    }
+
+    uint8_t *src = msg->msg_pool + (msg->head * msg->msg_size);
+
+    memcpy(data, src, msg->msg_size);
+    msg->head = (msg->head + 1) % msg->max_msg;
+    msg->msg_count--;
 }

@@ -1,4 +1,8 @@
 .\objects\main.o: User\main.c
+.\objects\main.o: User\SEGGER_RTT.h
+.\objects\main.o: User\SEGGER_RTT_Conf.h
+.\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
 .\objects\main.o: .\Start\stm32f10x.h
 .\objects\main.o: .\Start\core_cm3.h
 .\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h

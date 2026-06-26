@@ -193,6 +193,18 @@
           },
           {
             "path": "User/stm32f10x_it.h"
+          },
+          {
+            "path": "User/SEGGER_RTT.c"
+          },
+          {
+            "path": "User/SEGGER_RTT.h"
+          },
+          {
+            "path": "User/SEGGER_RTT_Conf.h"
+          },
+          {
+            "path": "User/SEGGER_RTT_printf.c"
           }
         ],
         "folders": []
@@ -345,7 +357,7 @@
       "uploadConfig": {
         "bin": "",
         "target": "stm32f1x",
-        "interface": "${workspaceFolder}/wifi_dap",
+        "interface": "stlink-v2",
         "baseAddr": "0x08000000"
       },
       "uploadConfigMap": {
