@@ -1,7 +1,7 @@
 /*
  * @Author: 轩
  * @Date: 2026-05-17 16:16:17
- * @LastEditTime: 2026-06-26 13:07:03
+ * @LastEditTime: 2026-06-26 14:52:19
  * @FilePath: \minirtos\OS_Core\os_core.h
  */
 #ifndef OS_CORE_H
@@ -33,6 +33,13 @@ typedef struct {
     os_list_node_t wait_node;
 } os_sem_t;
 
+typedef struct {
+    uint8_t lock;
+    os_tcb_t *owner;
+    uint8_t original_pri;
+    os_list_node_t wait_node;
+} os_mutex_t;
+
 #define OS_TCB_FROM_NODE(node_ptr) \
     ((os_tcb_t *)((uint8_t *)(node_ptr) - offsetof(os_tcb_t, list_node)))
 
@@ -59,4 +66,8 @@ void os_idle_task(void *param);
 void os_sem_init(os_sem_t *sem,uint8_t value);
 void os_sem_take(os_sem_t *sem);
 void os_sem_give(os_sem_t *sem);
+// ==================== 互斥锁 ====================
+void os_mutex_init(os_mutex_t *mutex);
+void os_mutex_take(os_mutex_t *mutex);
+void os_mutex_give(os_mutex_t *mutex);
 #endif // DEBUG

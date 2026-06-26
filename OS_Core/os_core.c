@@ -129,9 +129,8 @@ void os_tick_handler(void)
 
 void os_sem_init(os_sem_t *sem, uint8_t value)
 {
-    sem->count          = value;
-    sem->wait_node.prev = &sem->wait_node;
-    sem->wait_node.next = &sem->wait_node;
+    sem->count = value;
+    os_list_init(&sem->wait_node);
 }
 
 void os_sem_take(os_sem_t *sem)
@@ -139,7 +138,7 @@ void os_sem_take(os_sem_t *sem)
     if (sem->count > 0) {
         sem->count--;
     } else {
-        // os_current_task->state          = OS_TASK_STATE_BLOCKED;
+        os_current_task->state = OS_TASK_STATE_BLOCKED;
         os_list_remove(&os_current_task->list_node);
 
         if (os_list_is_empty(&os_ready_queue[os_current_task->priority]))
@@ -161,5 +160,65 @@ void os_sem_give(os_sem_t *sem)
         os_sched();
     } else {
         sem->count = 1;
+    }
+}
+
+// ==================== 互斥锁 ====================
+
+void os_mutex_init(os_mutex_t *mutex)
+{
+    mutex->lock         = 0;
+    mutex->owner        = NULL;
+    mutex->original_pri = 0;
+    os_list_init(&mutex->wait_node);
+}
+
+void os_mutex_take(os_mutex_t *mutex)
+{
+    if (mutex->lock == 0) {
+        mutex->lock         = 1;
+        mutex->owner        = os_current_task;
+        mutex->original_pri = os_current_task->priority;
+    } else {
+
+        if (os_current_task->priority > mutex->owner->priority) {
+            uint8_t old_pri = mutex->owner->priority;
+            os_list_remove(&mutex->owner->list_node);
+            if (os_list_is_empty(&os_ready_queue[old_pri]))
+                os_ready_bitmap &= ~(0x01 << old_pri);
+            mutex->owner->priority = os_current_task->priority;
+            os_list_add(&os_ready_queue[mutex->owner->priority], &mutex->owner->list_node);
+            os_ready_bitmap |= (0x01 << mutex->owner->priority);
+        }
+
+        os_current_task->state = OS_TASK_STATE_BLOCKED;
+        os_list_remove(&os_current_task->list_node);
+        if (os_list_is_empty(&os_ready_queue[os_current_task->priority]))
+            os_ready_bitmap &= ~(0x01 << os_current_task->priority);
+        os_list_add(&mutex->wait_node, &os_current_task->list_node);
+        os_sched();
+    }
+}
+
+void os_mutex_give(os_mutex_t *mutex)
+{
+    if (os_current_task->priority != mutex->original_pri) { // if(mutex->owner->priority!=mutex->original_pri)
+        os_list_remove(&os_current_task->list_node);
+        if (os_list_is_empty(&os_ready_queue[os_current_task->priority]))
+            os_ready_bitmap &= ~(0x01 << os_current_task->priority);
+        os_current_task->priority = mutex->original_pri;
+        os_list_add(&os_ready_queue[os_current_task->priority], &os_current_task->list_node);
+        os_ready_bitmap |= (0x01 << os_current_task->priority);
+    }
+    if (!(os_list_is_empty(&mutex->wait_node))) {
+        os_list_node_t *node = mutex->wait_node.next;
+        os_list_remove(node);
+        os_tcb_t *task = container_of(node, os_tcb_t, list_node);
+        os_task_ready(task);
+        mutex->owner=task;
+        mutex->original_pri=task->priority;
+        os_sched();
+    }else{
+        mutex->lock=0;
     }
 }
