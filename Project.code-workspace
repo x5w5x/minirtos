@@ -21,7 +21,8 @@
             "pwm_led.h": "c",
             "led_driver.h": "c",
             "os_core.h": "c",
-            "os_list.h": "c"
+            "os_list.h": "c",
+            "stdint.h": "c"
         },
         "EIDE.OpenOCD.ExePath": "E:\\elaphurelink-openocd-win32-x64\\bin\\openocd.exe"
     },

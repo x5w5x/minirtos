@@ -7,6 +7,7 @@
 ".\objects\serial.o"
 ".\objects\segger_rtt.o"
 ".\objects\segger_rtt_printf.o"
+".\objects\os_port_1.o"
 ".\objects\misc.o"
 ".\objects\stm32f10x_adc.o"
 ".\objects\stm32f10x_bkp.o"
@@ -33,9 +34,9 @@
 ".\objects\main.o"
 ".\objects\stm32f10x_it.o"
 ".\objects\os_core_1.o"
-".\objects\os_port_1.o"
+".\objects\os_port_2.o"
 ".\objects\delay.o"
---strict --scatter ".\Objects\Project.sct"
+--library_type=microlib --strict --scatter ".\Objects\Project.sct"
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list ".\Listings\Project.map" -o .\Objects\Project.axf

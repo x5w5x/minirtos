@@ -1,10 +1,9 @@
 .\objects\os_core_1.o: OS_Core\os_core.c
 .\objects\os_core_1.o: OS_Core\os_core.h
-.\objects\os_core_1.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-.\objects\os_core_1.o: OS_Core\os_list.h
-.\objects\os_core_1.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\os_core_1.o: .\OS_Port\os_port.h
 .\objects\os_core_1.o: .\Start\stm32f10x.h
 .\objects\os_core_1.o: .\Start\core_cm3.h
+.\objects\os_core_1.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\os_core_1.o: .\Start\system_stm32f10x.h
 .\objects\os_core_1.o: .\User\stm32f10x_conf.h
 .\objects\os_core_1.o: .\Library\stm32f10x_adc.h
@@ -31,4 +30,6 @@
 .\objects\os_core_1.o: .\Library\stm32f10x_usart.h
 .\objects\os_core_1.o: .\Library\stm32f10x_wwdg.h
 .\objects\os_core_1.o: .\Library\misc.h
+.\objects\os_core_1.o: OS_Core\os_list.h
+.\objects\os_core_1.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\os_core_1.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

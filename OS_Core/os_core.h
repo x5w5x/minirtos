@@ -1,12 +1,13 @@
 /*
  * @Author: 轩
  * @Date: 2026-05-17 16:16:17
- * @LastEditTime: 2026-06-26 20:59:22
+ * @LastEditTime: 2026-07-11 16:40:13
  * @FilePath: \minirtos\OS_Core\os_core.h
  */
 #ifndef OS_CORE_H
 #define OS_CORE_H
 
+#include "os_port.h"
 #include <stdint.h>
 #include "os_list.h"
 #include <stddef.h>
@@ -23,9 +24,14 @@ typedef struct os_tcb_t {
     uint8_t priority;
     os_task_state_t state;
     uint32_t ticks_to_delay;
-
     uint32_t time_slice_reload; // 初始时间片
     uint32_t time_slice;        // 剩余时间片
+
+    char name[16];
+    os_list_node_t global_node;
+    uint32_t *stack_base;
+    uint16_t stack_size;
+
 } os_tcb_t;
 
 typedef struct {
@@ -52,6 +58,18 @@ typedef struct {
     os_list_node_t wait_node;
 
 } os_msg_queue_t;
+typedef void (*os_timer_cb_t)(void *arg);
+typedef struct {
+    os_list_node_t list_node;
+    const char *name;
+
+    os_timer_cb_t cb;
+    void *arg;
+    uint32_t timeout_tick;
+    uint32_t period;
+    uint8_t state;
+}os_timer_t;
+
 
 #define OS_TCB_FROM_NODE(node_ptr) \
     ((os_tcb_t *)((uint8_t *)(node_ptr) - offsetof(os_tcb_t, list_node)))
@@ -63,6 +81,7 @@ typedef struct {
 // ==================== 核心组件 API 声明 ====================
 void os_sched_init(void);
 void os_task_create(os_tcb_t *tcb,
+                    const char *name,
                     void (*task_func)(void *),
                     void *param,
                     uint32_t *stack_base,
@@ -87,4 +106,9 @@ void os_mutex_give(os_mutex_t *mutex);
 void os_msg_init(os_msg_queue_t *msg, uint8_t *pool, uint16_t msg_size, uint16_t max_msg);
 void os_msg_send(os_msg_queue_t *msg, void *data);
 void os_msg_recv(os_msg_queue_t *msg, void *data);
+// ==================== 系统信息 ====================
+void os_system_info();
+// ==================== 软件定时 ====================
+void os_timer_init();
+void os_timer_start(os_timer_t *timer, uint32_t delay, uint32_t period);
 #endif // DEBUG

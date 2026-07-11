@@ -124,109 +124,325 @@
 //     while (1);
 // }
 
+// #include "SEGGER_RTT.h"
+// #include "stm32f10x.h"
+// #include "os_core.h"
 
-#include "SEGGER_RTT.h"
+// // ==========================================
+// // 1. 邮局基础设施筹备
+// // ==========================================
+// // 定义一个真实的包裹类型（比如传感器数据）
+// typedef struct {
+//     uint8_t sensor_id; // 传感器编号
+//     uint32_t value;    // 传感器读数
+// } sensor_msg_t;
+
+// #define MAX_MSGS 5 // 邮局货架最多放 5 个包裹
+
+// // 分配邮局和货架内存
+// os_msg_queue_t my_queue;
+// uint8_t my_queue_pool[MAX_MSGS * sizeof(sensor_msg_t)];
+
+// // 2. 分配任务堆栈和档案袋 (TCB)
+// uint32_t TaskA_Stack[256];
+// uint32_t TaskB_Stack[256];
+// uint32_t TaskC_Stack[256];
+// os_tcb_t TaskA_TCB;
+// os_tcb_t TaskB_TCB;
+// os_tcb_t TaskC_TCB;
+
+// extern uint32_t os_ready_bitmap;
+
+// // ==========================================
+// // 3. 任务剧本
+// // ==========================================
+
+// void TaskA(void *param) // 发送者 (中优先级 2)
+// {
+//     sensor_msg_t send_msg;
+//     send_msg.sensor_id = 1;
+//     send_msg.value     = 1000;
+
+//     while (1) {
+//         send_msg.value += 10; // 模拟传感器数据变化
+
+//         SEGGER_RTT_printf(0, "[Task A] 准备发货... ID:%d, Value:%d\r\n", send_msg.sensor_id, send_msg.value);
+
+//         // 往邮局塞包裹
+//         os_msg_send(&my_queue, &send_msg);
+
+//         os_delay(1000); // 每秒发一次
+//     }
+// }
+
+// void TaskB(void *param) // 接收者 (高优先级 3)
+// {
+//     sensor_msg_t recv_msg;
+
+//     while (1) {
+//         // 收件人在这里死等！如果没有包裹，他会被关进小黑屋，绝对不占用 CPU！
+//         os_msg_recv(&my_queue, &recv_msg);
+
+//         // 一旦代码走到这里，说明绝对拿到包裹了，立刻打印！
+//         SEGGER_RTT_printf(0, "[Task B] 收到包裹啦！ID:%d, Value:%d\r\n", recv_msg.sensor_id, recv_msg.value);
+//     }
+// }
+
+// void TaskC(void *param) // 心跳打工人 (低优先级 1)
+// {
+//     while (1) {
+//         SEGGER_RTT_printf(0, "[Task C] 系统心跳滴答...\r\n");
+//         // GPIO_WriteBit(GPIOC,GPIO_Pin_13,1-GPIO_ReadOutputDataBit(GPIOC,GPIO_Pin_13));
+//         GPIO_WriteBit(GPIOC, GPIO_Pin_13, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOC, GPIO_Pin_13)));
+//         os_delay(500);
+//     }
+// }
+// void Task_Start(void *param)
+// {
+//     // 1. 等待下一个心跳到来，确保计时精准
+//     os_delay(2); 
+    
+//     // 2. 清零计数器，准备测速
+//     os_idle_count = 0;
+    
+//     // 3. 核心：Start 任务主动去睡觉 100 毫秒！
+//     // 此时系统里没有任何别的任务，CPU 100% 被迫去跑 os_idle_task！
+//     os_delay(100); 
+    
+//     // 4. 100 毫秒到了，Start 任务醒来。看看空闲任务跑了多少圈
+//     os_idle_max = os_idle_count * 10; // 乘以 10，就是 1 秒钟的理论极限值！
+    
+//     // 5. 宣布校准完成！雷达正式开启！
+//     os_is_calibrated = 1;
+//     SEGGER_RTT_printf(0, "系统开机校准完成！最大空闲手速: %d 圈/秒\r\n", os_idle_max);
+
+//     // 6. 现在可以安全地把真正的业务任务创建出来了！
+//     os_task_create(&TaskA_TCB, "Task_A", TaskA, NULL, TaskA_Stack, 256, 3, 1);
+//     os_task_ready(&TaskA_TCB);
+    
+//     os_task_create(&TaskB_TCB, "Task_B", TaskB, NULL, TaskB_Stack, 256, 2, 1);
+//     os_task_ready(&TaskB_TCB);
+
+//     // 7. 功成身退，把自己挂起或者直接进入系统监控的死循环
+//     while (1) {
+//         os_system_info(); // 每隔两秒打印一次监控表
+//         os_delay(2000);
+//     }
+// }
+// // ==========================================
+// // 4. 初始化与点火
+// // ==========================================
+// int main(void)
+// {
+
+//     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
+//     GPIO_InitTypeDef led;
+//     led.GPIO_Mode  = GPIO_Mode_Out_PP;
+//     led.GPIO_Pin   = GPIO_Pin_13;
+//     led.GPIO_Speed = GPIO_Speed_50MHz;
+//     GPIO_Init(GPIOC, &led);
+//     SEGGER_RTT_Init();
+
+//     os_sched_init();
+
+//     // 初始化消息队列 (关键步骤！)
+//     // os_msg_queue_init(邮局指针, 货架内存, 每个包裹大小, 货架容量);
+//     // 注意：这里需要你之前写的 init 函数名字匹配，如果叫 os_msg_init 就改一下
+//     os_msg_init(&my_queue, my_queue_pool, sizeof(sensor_msg_t), MAX_MSGS);
+
+//     // 优先级分配：收件人(3) > 发件人(2) > 心跳(1)
+//     os_task_create(&TaskB_TCB, "TaskB", TaskB, NULL, TaskB_Stack, 256, 3, 1);
+//     os_task_create(&TaskA_TCB, "TaskA", TaskA, NULL, TaskA_Stack, 256, 2, 1);
+//     os_task_create(&TaskC_TCB, "TaskC", TaskC, NULL, TaskC_Stack, 256, 1, 1);
+
+//     os_task_ready(&TaskA_TCB);
+//     os_task_ready(&TaskB_TCB);
+//     os_task_ready(&TaskC_TCB);
+
+//     SEGGER_RTT_WriteString(0, "MiniRTOS Booting with Message Queue...\r\n");
+
+//     os_start();
+
+//     while (1);
+// }
+
+
+
+
 #include "stm32f10x.h"
-#include "os_core.h"
+#include "SEGGER_RTT.h"
+#include "os_core.h" 
 
-// ==========================================
-// 1. 邮局基础设施筹备
-// ==========================================
-// 定义一个真实的包裹类型（比如传感器数据）
+
+extern volatile uint32_t os_idle_count;
+extern uint32_t os_idle_max;
+extern uint8_t  os_is_calibrated;
+extern void os_system_info(void); 
+
+
 typedef struct {
-    uint8_t  sensor_id;  // 传感器编号
-    uint32_t value;      // 传感器读数
+    uint8_t sensor_id; 
+    uint32_t value;    
 } sensor_msg_t;
 
-#define MAX_MSGS 5 // 邮局货架最多放 5 个包裹
+#define MAX_MSGS 5 /
 
-// 分配邮局和货架内存
 os_msg_queue_t my_queue;
-uint8_t my_queue_pool[MAX_MSGS * sizeof(sensor_msg_t)]; 
+uint8_t my_queue_pool[MAX_MSGS * sizeof(sensor_msg_t)];
 
-// 2. 分配任务堆栈和档案袋 (TCB)
+
 uint32_t TaskA_Stack[256];
 uint32_t TaskB_Stack[256];
 uint32_t TaskC_Stack[256];
+uint32_t TaskStart_Stack[256];
+
 os_tcb_t TaskA_TCB;
 os_tcb_t TaskB_TCB;
 os_tcb_t TaskC_TCB;
+os_tcb_t TaskStart_TCB; 
 
-extern uint32_t os_ready_bitmap;
 
-void SysTick_Handler(void)
-{
-    os_tick_handler();
-}
 
-// ==========================================
-// 3. 任务剧本
-// ==========================================
-
-void TaskA(void *param) // 发送者 (中优先级 2)
+void TaskA(void *param)
 {
     sensor_msg_t send_msg;
     send_msg.sensor_id = 1;
-    send_msg.value = 1000;
+    send_msg.value     = 1000;
 
     while (1) {
-        send_msg.value += 10; // 模拟传感器数据变化
-        
-        SEGGER_RTT_printf(0, "[Task A] 准备发货... ID:%d, Value:%d\r\n", send_msg.sensor_id, send_msg.value);
-        
-        // 往邮局塞包裹
+        send_msg.value += 10; 
+     SEGGER_RTT_printf(0, "[Task A] 准备发货... ID:%d, Value:%d\r\n", send_msg.sensor_id, send_msg.value);
+
+       
         os_msg_send(&my_queue, &send_msg);
-        
-        os_delay(1000); // 每秒发一次
+
+        os_delay(1000); 
     }
 }
 
-void TaskB(void *param) // 接收者 (高优先级 3)
+void TaskB(void *param)
 {
     sensor_msg_t recv_msg;
 
     while (1) {
-        // 收件人在这里死等！如果没有包裹，他会被关进小黑屋，绝对不占用 CPU！
+     
         os_msg_recv(&my_queue, &recv_msg);
-        
-        // 一旦代码走到这里，说明绝对拿到包裹了，立刻打印！
-        SEGGER_RTT_printf(0, "[Task B] 收到包裹啦！ID:%d, Value:%d\r\n", recv_msg.sensor_id, recv_msg.value);
+    
+         SEGGER_RTT_printf(0, "[Task B] 收到包裹啦！ID:%d, Value:%d\r\n", recv_msg.sensor_id, recv_msg.value);
     }
 }
 
-void TaskC(void *param) // 心跳打工人 (低优先级 1)
+void TaskC(void *param) 
 {
     while (1) {
-        SEGGER_RTT_printf(0, "[Task C] 系统心跳滴答...\r\n");
-        os_delay(500); 
+    
+        GPIO_WriteBit(GPIOC, GPIO_Pin_13, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOC, GPIO_Pin_13)));
+        SEGGER_RTT_printf(0,"我在闪烁\r\n");
+        os_delay(500);
     }
 }
 
-// ==========================================
-// 4. 初始化与点火
-// ==========================================
+#define CLONE_NUM 3
+uint32_t Clone_Stacks[CLONE_NUM][128];
+os_tcb_t Clone_TCBs[CLONE_NUM];
+void Task_Clone(void *param)
+{
+   
+    int id = (int)param; 
+    
+    while (1) {
+      
+        volatile uint32_t dummy = 0;
+		SEGGER_RTT_printf(0,"我是任务%d\r\n",id);
+        for (int i = 0; i < 10000; i++) {
+            dummy++; 
+        }
+        
+  
+        os_delay(500 + id * 10); 
+    }
+}
+
+void timer_test_callback(void *arg) {
+   
+    SEGGER_RTT_printf(0,"[Timer] 闹钟响啦！收到留言: %s\n", (char *)arg);
+    
+}
+void Task_Start(void *param) 
+{
+    
+    os_delay(2); 
+    
+  
+    os_idle_count = 0;
+    
+  
+    os_delay(100); 
+    
+    
+    os_idle_max = os_idle_count * 10; 
+    
+  
+    os_is_calibrated = 1;
+    SEGGER_RTT_printf(0, "\r\n[SYS] 开机动态校准完成！最大空闲手速: %d 圈/秒\r\n", os_idle_max);
+
+ 
+    os_task_create(&TaskB_TCB, "TaskB", TaskB, NULL, TaskB_Stack, 256, 23, 1);
+    os_task_create(&TaskA_TCB, "TaskA", TaskA, NULL, TaskA_Stack, 256, 22, 1);
+    os_task_create(&TaskC_TCB, "TaskC", TaskC, NULL, TaskC_Stack, 256, 21, 1);
+
+    os_task_ready(&TaskB_TCB);
+    os_task_ready(&TaskA_TCB);
+    os_task_ready(&TaskC_TCB);
+    for (int i = 0; i < CLONE_NUM; i++) {
+        char clone_name[16];
+ 
+        snprintf(clone_name, sizeof(clone_name), "Clone_%d", i); 
+        
+
+        os_task_create(&Clone_TCBs[i], clone_name, Task_Clone, 
+                      (void *)i, Clone_Stacks[i], 128, 10 + i, 1);
+        
+        os_task_ready(&Clone_TCBs[i]);
+    }
+    
+
+ 
+    while (1) {
+        os_system_info(); 
+        os_delay(2000);   
+    }
+}
+
+os_timer_t my_test_timer;
+
 int main(void)
 {
-    SysTick_Config(SystemCoreClock / 1000);
+
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
+    GPIO_InitTypeDef led;
+    led.GPIO_Mode  = GPIO_Mode_Out_PP;
+    led.GPIO_Pin   = GPIO_Pin_13;
+    led.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOC, &led);
+    
+my_test_timer.cb=timer_test_callback;
+my_test_timer.arg = "hello";
     SEGGER_RTT_Init();
 
+
     os_sched_init();
-    
-    // 初始化消息队列 (关键步骤！)
-    // os_msg_queue_init(邮局指针, 货架内存, 每个包裹大小, 货架容量);
-    // 注意：这里需要你之前写的 init 函数名字匹配，如果叫 os_msg_init 就改一下
+
+   
     os_msg_init(&my_queue, my_queue_pool, sizeof(sensor_msg_t), MAX_MSGS);
 
-    // 优先级分配：收件人(3) > 发件人(2) > 心跳(1)
-    os_task_create(&TaskB_TCB, TaskB, NULL, TaskB_Stack, 256, 3, 1);
-    os_task_create(&TaskA_TCB, TaskA, NULL, TaskA_Stack, 256, 2, 1);
-    os_task_create(&TaskC_TCB, TaskC, NULL, TaskC_Stack, 256, 1, 1);
     
-    os_task_ready(&TaskA_TCB);
-    os_task_ready(&TaskB_TCB);
-    os_task_ready(&TaskC_TCB);
-    
-    SEGGER_RTT_WriteString(0, "MiniRTOS Booting with Message Queue...\r\n");
+    os_task_create(&TaskStart_TCB, "TaskStart", Task_Start, NULL, TaskStart_Stack, 256, 4, 1);
+    os_task_ready(&TaskStart_TCB);
+
+    SEGGER_RTT_WriteString(0, "MiniRTOS Booting... Waiting for CPU Calibration...\r\n");
+    os_timer_start(&my_test_timer,500,1000);
+
     
     os_start();
 
