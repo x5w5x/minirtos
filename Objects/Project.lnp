@@ -8,6 +8,8 @@
 ".\objects\segger_rtt.o"
 ".\objects\segger_rtt_printf.o"
 ".\objects\os_port_1.o"
+".\objects\vfs.o"
+".\objects\led_driver.o"
 ".\objects\misc.o"
 ".\objects\stm32f10x_adc.o"
 ".\objects\stm32f10x_bkp.o"

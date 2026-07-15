@@ -186,7 +186,7 @@
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
-            <useUlib>0</useUlib>
+            <useUlib>1</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <nSecure>0</nSecure>
@@ -335,7 +335,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>.\Start;.\User;.\Library;.\System;.\minirtos;.\System;.\OS_Port;.\OS_Core</IncludePath>
+              <IncludePath>.\Start;.\User;.\Library;.\System;.\minirtos;.\System;.\OS_Port;.\OS_Core;.\vfs;.\driver</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -463,6 +463,36 @@
               <FileName>SEGGER_RTT_printf.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\User\SEGGER_RTT_printf.c</FilePath>
+            </File>
+            <File>
+              <FileName>os_port.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\OS_Port\os_port.c</FilePath>
+            </File>
+            <File>
+              <FileName>os_port.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\OS_Port\os_port.h</FilePath>
+            </File>
+            <File>
+              <FileName>vfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\vfs\vfs.c</FilePath>
+            </File>
+            <File>
+              <FileName>vfs.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\vfs\vfs.h</FilePath>
+            </File>
+            <File>
+              <FileName>led_driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\driver\led_driver.c</FilePath>
+            </File>
+            <File>
+              <FileName>led_driver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\driver\led_driver.h</FilePath>
             </File>
           </Files>
         </Group>

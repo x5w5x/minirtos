@@ -36,3 +36,5 @@
 .\objects\main.o: .\OS_Port\os_port.h
 .\objects\main.o: .\OS_Core\os_list.h
 .\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\main.o: .\vfs\vfs.h
+.\objects\main.o: .\driver\led_driver.h

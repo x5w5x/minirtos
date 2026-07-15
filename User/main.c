@@ -272,8 +272,8 @@
 #include "stm32f10x.h"
 #include "SEGGER_RTT.h"
 #include "os_core.h" 
-
-
+#include "vfs.h"
+#include "led_driver.h"
 extern volatile uint32_t os_idle_count;
 extern uint32_t os_idle_max;
 extern uint8_t  os_is_calibrated;
@@ -285,7 +285,7 @@ typedef struct {
     uint32_t value;    
 } sensor_msg_t;
 
-#define MAX_MSGS 5 /
+#define MAX_MSGS 5 
 
 os_msg_queue_t my_queue;
 uint8_t my_queue_pool[MAX_MSGS * sizeof(sensor_msg_t)];
@@ -334,10 +334,26 @@ void TaskB(void *param)
 
 void TaskC(void *param) 
 {
+    // 1. 找大堂经理要设备
+    int fd = vfs_open("sys_led");
+    int led =vfs_open("led");
+    uint8_t status = 1;
+
     while (1) {
-    
-        GPIO_WriteBit(GPIOC, GPIO_Pin_13, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOC, GPIO_Pin_13)));
-        SEGGER_RTT_printf(0,"我在闪烁\r\n");
+        if (fd!= -1) {
+            // 2. 状态翻转 (0变1，1变0)
+            // status = 1 - status;
+            
+            // 3. 通过 VFS 发送控制指令
+            // vfs_write(fd, 0, &status, 1);
+            vfs_ioctl(fd,0x02,NULL);
+            vfs_ioctl(led,0x02,NULL);
+			//vfs_write(led,0,&status,1);
+            SEGGER_RTT_printf(0,"我在通过 VFS 闪烁，状态: %d\r\n", status);
+        } else {
+            SEGGER_RTT_printf(0,"糟糕，没有找到 sys_led 设备！\r\n");
+        }
+        
         os_delay(500);
     }
 }
@@ -419,18 +435,20 @@ os_timer_t my_test_timer;
 int main(void)
 {
 
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
-    GPIO_InitTypeDef led;
-    led.GPIO_Mode  = GPIO_Mode_Out_PP;
-    led.GPIO_Pin   = GPIO_Pin_13;
-    led.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOC, &led);
+    // RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
+    // GPIO_InitTypeDef led;
+    // led.GPIO_Mode  = GPIO_Mode_Out_PP;
+    // led.GPIO_Pin   = GPIO_Pin_13;
+    // led.GPIO_Speed = GPIO_Speed_50MHz;
+    // GPIO_Init(GPIOC, &led);
     
 my_test_timer.cb=timer_test_callback;
 my_test_timer.arg = "hello";
     SEGGER_RTT_Init();
 
-
+    vfs_init();          
+    led_register("sys_led",GPIOC,GPIO_Pin_13,0);
+    led_register("led",GPIOA,GPIO_Pin_0,1);
     os_sched_init();
 
    
