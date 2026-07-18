@@ -22,7 +22,7 @@ Dialog DLL:      TCM.DLL V1.27.0.0
  
 <h2>Project:</h2>
 D:\�ܹ�����\model\minirtos\Project.uvprojx
-Project File Date:  07/13/2026
+Project File Date:  07/17/2026
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
@@ -38,22 +38,28 @@ compiling main.c...
   #endif // DEBUG
 .\vfs\vfs.h(31): warning:  #1295-D: Deprecated declaration vfs_init - give arg types
   void vfs_init();
-User\main.c(352): warning:  #870-D: invalid multibyte character sequence
-              SEGGER_RTT_printf(0,"我在通过 VFS 闪烁，状�?: %d\r\n", status);
-User\main.c(354): warning:  #870-D: invalid multibyte character sequence
-              SEGGER_RTT_printf(0,"糟糕，没有找�? sys_led 设备！\r\n");
-User\main.c(403): warning:  #870-D: invalid multibyte character sequence
+.\driver\uart_driver.h(14): warning:  #1-D: last line of file ends without a newline
+  #endif // !UART_DRIVER 
+.\vm\vm_isa.h(48): warning:  #1-D: last line of file ends without a newline
+  #endif // !VM_ISA_H
+User\main.c(435): warning:  #870-D: invalid multibyte character sequence
+      SEGGER_RTT_printf(0, "VM 初始化完成，开始直接执行纯 HEX 字节�?...\r\n");
+.\vm\vm_task.h(32): warning:  #1295-D: Deprecated declaration vm_unload_apps - give arg types
+  void vm_unload_apps();
+.\vm\vm_task.h(33): warning:  #1295-D: Deprecated declaration vm_load_apps - give arg types
+  void vm_load_apps();
+User\main.c(492): warning:  #870-D: invalid multibyte character sequence
       SEGGER_RTT_printf(0, "\r\n[SYS] 开机动态校准完成！最大空闲手�?: %d �?/秒\r\n", os_idle_max);
-User\main.c(403): warning:  #870-D: invalid multibyte character sequence
+User\main.c(492): warning:  #870-D: invalid multibyte character sequence
       SEGGER_RTT_printf(0, "\r\n[SYS] 开机动态校准完成！最大空闲手�?: %d �?/秒\r\n", os_idle_max);
-User\main.c(416): warning:  #223-D: function "snprintf" declared implicitly
-          snprintf(clone_name, sizeof(clone_name), "Clone_%d", i); 
-User\main.c(468): warning:  #1-D: last line of file ends without a newline
+.\driver\mq_driver.h(16): warning:  #1-D: last line of file ends without a newline
+  #endif
+User\main.c(559): warning:  #1-D: last line of file ends without a newline
   }
-User\main.c: 11 warnings, 0 errors
+User\main.c: 14 warnings, 0 errors
 linking...
-Program Size: Code=10784 RO-data=356 RW-data=92 ZI-data=9908  
-".\Objects\Project.axf" - 0 Error(s), 11 Warning(s).
+Program Size: Code=10372 RO-data=544 RW-data=120 ZI-data=10104  
+".\Objects\Project.axf" - 0 Error(s), 14 Warning(s).
 
 <h2>Collection of Component include folders:</h2>
   .\RTE\_Target_1

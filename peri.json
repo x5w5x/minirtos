@@ -1,0 +1,19 @@
+{
+    "SYSCALLS": {
+        "OPEN": 1,
+        "IOCTL": 3,
+        "WRITE": 4,
+        "READ": 5
+    },
+    "CLASSES": {
+        "led": { "ON": 1, "OFF": 0, "TOGGLE": 2 },
+        "mq": { "WRITE": 4, "READ": 5 },
+        "uart": { "WRITE": 4, "READ": 5 } 
+    },
+    "BINDINGS": {
+        "sys_led": "led",
+        "led": "led",
+        "mq_app": "mq",
+        "uart": "uart"
+    }
+}

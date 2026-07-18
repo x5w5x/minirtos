@@ -24,7 +24,11 @@
             "os_list.h": "c",
             "stdint.h": "c",
             "string.h": "c",
-            "vfs.h": "c"
+            "vfs.h": "c",
+            "vm_task.h": "c",
+            "vm_isa.h": "c",
+            "stm32f10x_flash.h": "c",
+            "iap_protocol.h": "c"
         },
         "EIDE.OpenOCD.ExePath": "E:\\elaphurelink-openocd-win32-x64\\bin\\openocd.exe"
     },

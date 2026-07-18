@@ -7,7 +7,8 @@
     "OS_Core",
     "OS_Port",
     "vfs",
-    "driver"
+    "driver",
+    "vm"
   ],
   "virtualFolder": {
     "name": "<virtual_root>",
@@ -410,7 +411,8 @@
           "OS_Core",
           "OS_Port",
           "vfs",
-          "driver"
+          "driver",
+          "vm"
         ],
         "libList": [],
         "defineList": [
