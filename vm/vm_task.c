@@ -1,5 +1,6 @@
 #include "vm_task.h"
 #include "os_core.h"
+
 static const uint8_t app0_code[]={
     0x05, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00,
     0x05, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x47, 0x00, 0x00, 0x00,
@@ -30,12 +31,15 @@ static const uint8_t app1_code[]={   0x05, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0
 //     }
 // }
 static volatile uint8_t app_valid =0;
+
 void vm_unload_apps()
 {
     app_valid=0;
     for(int i=2;i<APP_NUM;i++){
         ctx[i].is_run=0;
+        ctx[i].pc=0;
         ctx[i].bytecode=NULL;
+        vfs_close(ctx[i].wait_fd);
     }
     SEGGER_RTT_printf(0, "[VM] 动态 App 已全部卸载，等待烧录...\r\n");
 }
@@ -62,7 +66,9 @@ void vm_load_apps()
 }
 static const uint8_t* const raw_app_bytecodes[APP_NUM] = {
     app0_code,  
-    app1_code,  
+   
+ app1_code, 
+    //   NULL,
     NULL,       
     NULL        
 };

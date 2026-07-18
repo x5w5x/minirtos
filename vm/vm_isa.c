@@ -11,6 +11,7 @@ static void do_syscall(vm_app_context_t *ctx, vm_inst_t *inst)
             const char *dev_name   = (const char *)(ctx->bytecode + inst->reg[2]);
             int fd                 = vfs_open(dev_name);
             ctx->reg[inst->reg[1]] = fd;
+            ctx->wait_fd = fd;
 
             break;
         }
@@ -20,21 +21,26 @@ static void do_syscall(vm_app_context_t *ctx, vm_inst_t *inst)
             int ret = vfs_ioctl(fd, cmd, NULL);
             break;
         }
-        case SYS_VFS_WRITE:{
-            int fd = ctx->reg[inst->reg[1]];
-            const char *buffer =(const char *)(ctx->bytecode+inst->reg[2]);
-            int ret =vfs_write(fd,0,buffer,strlen(buffer));
+        case SYS_VFS_WRITE: {
+            int fd             = ctx->reg[inst->reg[1]];
+            const char *buffer = (const char *)(ctx->bytecode + inst->reg[2]);
+            int ret            = vfs_write(fd, 0, buffer, strlen(buffer));
             break;
         }
         case SYS_VFS_READ: {
-            int fd = ctx->reg[inst->reg[1]];
+            int fd        = ctx->reg[inst->reg[1]];
             int *dest_reg = &ctx->reg[inst->reg[2]];
-            int ret = vfs_read(fd,0,dest_reg,sizeof(int));
-            if(ret<=0){
-                ctx->state=2;
-                ctx->wait_fd = fd;
-                ctx->pc -=16;
+            int ret       = vfs_read(fd, 0, dest_reg, sizeof(int));
+            if (ret <= 0) {
+                ctx->state   = 2;
+                ctx->pc -= 16;
             }
+            break;
+        }
+        case SYS_VFS_CLOSE: {
+            int fd  = ctx->reg[inst->reg[1]];
+            int ret = vfs_close(fd);
+            ctx->reg[inst->reg[1]] = ret; // 返回执行结果给 App
             break;
         }
     }
@@ -43,14 +49,13 @@ static void do_syscall(vm_app_context_t *ctx, vm_inst_t *inst)
 void vm_run(vm_app_context_t *ctx)
 {
     int inst_count = 0;
-    while (ctx->is_run && (ctx->state==1)) {
+    while (ctx->is_run && (ctx->state == 1)) {
 
         vm_inst_t *inst    = (vm_inst_t *)(ctx->bytecode + ctx->pc);
         vm_opcode_t opcode = inst->opcode;
-        
-        
+
         if (inst_count >= 50) {
-            return; 
+            return;
         }
         inst_count++;
         ctx->pc += 16;
@@ -75,7 +80,34 @@ void vm_run(vm_app_context_t *ctx)
                 ctx->state        = 0;
                 break;
             case op_syscall:
-                do_syscall(ctx,inst); 
+                do_syscall(ctx, inst);
+                break;
+            case op_cmp:
+                if (ctx->reg[inst->reg[0]] == inst->reg[1])
+                    ctx->reg[15] = 0;
+                else if (ctx->reg[inst->reg[0]] > inst->reg[1])
+                    ctx->reg[15] = 1;
+                else
+                    ctx->reg[15] = -1;
+                break;
+            case op_jeq:
+                if (ctx->reg[15] == 0)
+                    ctx->pc += (inst->reg[0] - 16);
+                break;
+            case op_jne:
+                if (ctx->reg[15] != 0)
+                    ctx->pc += (inst->reg[0] - 16);
+                break;
+            case op_jgt:
+                if (ctx->reg[15] == 1)
+                    ctx->pc += (inst->reg[0] - 16);
+                break;
+            case op_jlt:
+                if (ctx->reg[15] == -1)
+                    ctx->pc += (inst->reg[0] - 16);
+                break;
+            default:
+                ctx->is_run = 0;
                 break;
         }
     }
@@ -85,13 +117,11 @@ void vm_wakeup(vm_app_context_t *ctx)
 {
     if ((ctx->state == 0) && (ctx->wack_up_tick <= os_sys_tick)) {
         ctx->state = 1;
-    }else if (ctx->state==2)
-    {
-       int msg_count = vfs_ioctl(ctx->wait_fd, VFS_CMD_POLL_READ, NULL);
-        
+    } else if (ctx->state == 2) {
+        int msg_count = vfs_ioctl(ctx->wait_fd, VFS_CMD_POLL_READ, NULL);
+
         if (msg_count > 0) {
-            ctx->state = 1; 
+            ctx->state = 1;
         }
     }
 }
-

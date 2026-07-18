@@ -492,11 +492,11 @@ void Task_Start(void *param)
     SEGGER_RTT_printf(0, "\r\n[SYS] 开机动态校准完成！最大空闲手速: %d 圈/秒\r\n", os_idle_max);
 
  
-    os_task_create(&TaskB_TCB, "TaskB",Task_IAP, NULL, TaskB_Stack, 256, 20, 1);
+    os_task_create(&TaskB_TCB, "TaskB",Task_IAP, NULL, TaskB_Stack, 256, 21, 10);
     //os_task_create(&TaskA_TCB, "TaskA", TaskA, NULL, TaskA_Stack, 256, 22, 1);
     // os_task_create(&TaskC_TCB, "TaskC", TaskC, NULL, TaskC_Stack, 256, 21, 1);
  
-    os_task_create(&TaskC_TCB, "TaskC", vmtask, NULL, TaskC_Stack, 256, 21, 1);
+    os_task_create(&TaskC_TCB, "TaskC", vmtask, NULL, TaskC_Stack, 256, 21, 10);
     os_task_ready(&TaskB_TCB);
     //os_task_ready(&TaskA_TCB);
     os_task_ready(&TaskC_TCB);
@@ -515,7 +515,7 @@ void Task_Start(void *param)
 
  
     while (1) {
-       // os_system_info(); 
+        os_system_info(); 
         os_delay(2000);   
     }
 }
@@ -546,11 +546,11 @@ my_test_timer.arg = "hello";
     os_msg_init(&my_queue, my_queue_pool, sizeof(sensor_msg_t), MAX_MSGS);
 
      mq_register("mq_app", &my_queue);
-    os_task_create(&TaskStart_TCB, "TaskStart", Task_Start, NULL, TaskStart_Stack, 256, 4, 1);
+    os_task_create(&TaskStart_TCB, "TaskStart", Task_Start, NULL, TaskStart_Stack, 256, 22, 1);
     os_task_ready(&TaskStart_TCB);
 
     SEGGER_RTT_WriteString(0, "MiniRTOS Booting... Waiting for CPU Calibration...\r\n");
-    os_timer_start(&my_test_timer,500,1000);
+    //os_timer_start(&my_test_timer,500,1000);
 
     
     os_start();

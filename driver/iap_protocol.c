@@ -185,6 +185,7 @@ void Task_IAP(void *param)
     while (1) {
         if (iap_recv_frame(&g_frame) != 0) {
             iap_reply(IAP_NACK);
+            os_delay(1);
             continue;
         }
 
@@ -200,5 +201,6 @@ void Task_IAP(void *param)
         if (ret != 0)
             SEGGER_RTT_printf(0, "[IAP] cmd=%02x err=%d\r\n",
                               g_frame.cmd, ret);
+    
     }
 }

@@ -5,5 +5,10 @@
     "SUB": 3,
     "JUMP": 4,
     "SYSCALL": 5,
-    "DELAY": 6
+    "DELAY": 6,
+    "CMP": 7,
+    "JEQ": 8,
+    "JNE": 9,
+    "JGT": 10,
+    "JLT": 11
 }
