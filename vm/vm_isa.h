@@ -1,7 +1,7 @@
 /*
  * @Author: 轩
  * @Date: 2026-07-15 23:22:16
- * @LastEditTime: 2026-07-18 19:18:41
+ * @LastEditTime: 2026-07-20 10:21:42
  * @FilePath: \minirtos\vm\vm_isa.h
  */
 #ifndef VM_ISA_H
@@ -32,6 +32,14 @@ typedef enum {
     op_jgt,
     op_jlt,
 
+    op_and,
+    op_or,
+    op_xor,
+    op_lshift,
+    op_rshift,
+    op_call,
+    op_ret,
+
 }vm_opcode_t;
 
 typedef struct {
@@ -48,6 +56,12 @@ typedef struct {
     uint8_t *bytecode;
     uint32_t pc;
     int32_t reg[16];
+
+    uint32_t call_stack[8];
+    uint8_t sp;
+
+    int fd_table[8];
+    uint8_t fd_count;
 
      
 }vm_app_context_t;

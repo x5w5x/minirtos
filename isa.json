@@ -10,5 +10,12 @@
     "JEQ": 8,
     "JNE": 9,
     "JGT": 10,
-    "JLT": 11
+    "JLT": 11,
+    "AND": 12,
+    "OR": 13,
+    "XOR": 14,
+    "LSHIFT": 15,
+    "RSHIFT": 16,
+    "CALL": 17,
+    "RET": 18
 }

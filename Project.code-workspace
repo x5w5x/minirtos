@@ -28,7 +28,9 @@
             "vm_task.h": "c",
             "vm_isa.h": "c",
             "stm32f10x_flash.h": "c",
-            "iap_protocol.h": "c"
+            "iap_protocol.h": "c",
+            "uart_driver.h": "c",
+            "stm32f10x_it.h": "c"
         },
         "EIDE.OpenOCD.ExePath": "E:\\elaphurelink-openocd-win32-x64\\bin\\openocd.exe"
     },

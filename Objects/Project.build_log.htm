@@ -22,19 +22,302 @@ Dialog DLL:      TCM.DLL V1.27.0.0
  
 <h2>Project:</h2>
 D:\�ܹ�����\model\minirtos\Project.uvprojx
-Project File Date:  07/18/2026
+Project File Date:  07/20/2026
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
-Build target 'Target 1'
-".\Objects\Project.axf" - 0 Error(s), 0 Warning(s).
+Rebuild target 'Target 1'
+assembling startup_stm32f10x_md.s...
+compiling core_cm3.c...
+compiling Serial.c...
+compiling os_core.c...
+compiling SEGGER_RTT.c...
+compiling SEGGER_RTT_printf.c...
+compiling vm_task.c...
+vm\vm_isa.h(71): warning:  #1-D: last line of file ends without a newline
+  #endif // !VM_ISA_H
+vm\vm_task.h(39): warning:  #1295-D: Deprecated declaration vm_unload_apps - give arg types
+  void vm_unload_apps();
+vm\vm_task.h(41): warning:  #1295-D: Deprecated declaration vm_load_apps - give arg types
+  void vm_load_apps();
+vm\vm_task.h(42): warning:  #1295-D: Deprecated declaration vm_find_apps - give arg types
+   void vm_find_apps();
+.\OS_Port\os_port.h(13): warning:  #1295-D: Deprecated declaration os_port_systick_init - give arg types
+  void os_port_systick_init();
+.\OS_Core\os_core.h(110): warning:  #1295-D: Deprecated declaration os_system_info - give arg types
+  void os_system_info();
+.\OS_Core\os_core.h(112): warning:  #1295-D: Deprecated declaration os_timer_init - give arg types
+  void os_timer_init();
+.\OS_Core\os_core.h(116): warning:  #1-D: last line of file ends without a newline
+  #endif // DEBUG
+vm\vm_task.c(48): warning:  #223-D: function "vfs_close" declared implicitly
+              vfs_close(ctx[i].fd_table[j]);
+vm\vm_task.c(53): warning:  #223-D: function "SEGGER_RTT_printf" declared implicitly
+      SEGGER_RTT_printf(0, "[VM] 动�? App 已全部卸载，等待烧录...\r\n");
+vm\vm_task.c(53): warning:  #870-D: invalid multibyte character sequence
+      SEGGER_RTT_printf(0, "[VM] 动�? App 已全部卸载，等待烧录...\r\n");
+vm\vm_task.c(62): warning:  #223-D: function "SEGGER_RTT_printf" declared implicitly
+          SEGGER_RTT_printf(0, "[VM] 发现 MQVM �?, 包含 %d �? App\r\n", header->app_count);
+vm\vm_task.c(62): warning:  #870-D: invalid multibyte character sequence
+          SEGGER_RTT_printf(0, "[VM] 发现 MQVM �?, 包含 %d �? App\r\n", header->app_count);
+vm\vm_task.c(62): warning:  #870-D: invalid multibyte character sequence
+          SEGGER_RTT_printf(0, "[VM] 发现 MQVM �?, 包含 %d �? App\r\n", header->app_count);
+vm\vm_task.c(72): warning:  #870-D: invalid multibyte character sequence
+              SEGGER_RTT_printf(0, "[VM] 挂载动�? App 到槽�? %d, 地址: %p\r\n", slot, app_addr);
+vm\vm_task.c(72): warning:  #870-D: invalid multibyte character sequence
+              SEGGER_RTT_printf(0, "[VM] 挂载动�? App 到槽�? %d, 地址: %p\r\n", slot, app_addr);
+vm\vm_task.c(140): warning:  #223-D: function "SEGGER_RTT_printf" declared implicitly
+          SEGGER_RTT_printf(0, "[VM] 找到最�? App: 槽位 %d, 版本 %d\r\n", latest_index, max_ver);
+vm\vm_task.c(140): warning:  #870-D: invalid multibyte character sequence
+          SEGGER_RTT_printf(0, "[VM] 找到最�? App: 槽位 %d, 版本 %d\r\n", latest_index, max_ver);
+vm\vm_task.c(143): warning:  #223-D: function "SEGGER_RTT_printf" declared implicitly
+          SEGGER_RTT_printf(0, "[VM] 未找到有效的动�? App\r\n");
+vm\vm_task.c(143): warning:  #870-D: invalid multibyte character sequence
+          SEGGER_RTT_printf(0, "[VM] 未找到有效的动�? App\r\n");
+vm\vm_task.c(145): warning:  #1-D: last line of file ends without a newline
+  }
+vm\vm_task.c: 21 warnings, 0 errors
+compiling vm_isa.c...
+vm\vm_isa.h(71): warning:  #1-D: last line of file ends without a newline
+  #endif // !VM_ISA_H
+.\OS_Port\os_port.h(13): warning:  #1295-D: Deprecated declaration os_port_systick_init - give arg types
+  void os_port_systick_init();
+.\OS_Core\os_core.h(110): warning:  #1295-D: Deprecated declaration os_system_info - give arg types
+  void os_system_info();
+.\OS_Core\os_core.h(112): warning:  #1295-D: Deprecated declaration os_timer_init - give arg types
+  void os_timer_init();
+.\OS_Core\os_core.h(116): warning:  #1-D: last line of file ends without a newline
+  #endif // DEBUG
+.\vfs\vfs.h(31): warning:  #1295-D: Deprecated declaration vfs_init - give arg types
+  void vfs_init();
+vm\vm_isa.c: 6 warnings, 0 errors
+compiling vfs.c...
+.\OS_Port\os_port.h(13): warning:  #1295-D: Deprecated declaration os_port_systick_init - give arg types
+  void os_port_systick_init();
+.\OS_Core\os_core.h(110): warning:  #1295-D: Deprecated declaration os_system_info - give arg types
+  void os_system_info();
+.\OS_Core\os_core.h(112): warning:  #1295-D: Deprecated declaration os_timer_init - give arg types
+  void os_timer_init();
+.\OS_Core\os_core.h(116): warning:  #1-D: last line of file ends without a newline
+  #endif // DEBUG
+vfs\vfs.h(31): warning:  #1295-D: Deprecated declaration vfs_init - give arg types
+  void vfs_init();
+vfs\vfs.c(100): warning:  #1-D: last line of file ends without a newline
+  }
+vfs\vfs.c: 6 warnings, 0 errors
+compiling flash_iap.c...
+driver\flash_iap.h(22): warning:  #1-D: last line of file ends without a newline
+  #endif
+driver\flash_iap.c(138): warning:  #1-D: last line of file ends without a newline
+  }
+driver\flash_iap.c: 2 warnings, 0 errors
+compiling uart_driver.c...
+.\OS_Port\os_port.h(13): warning:  #1295-D: Deprecated declaration os_port_systick_init - give arg types
+  void os_port_systick_init();
+.\OS_Core\os_core.h(110): warning:  #1295-D: Deprecated declaration os_system_info - give arg types
+  void os_system_info();
+.\OS_Core\os_core.h(112): warning:  #1295-D: Deprecated declaration os_timer_init - give arg types
+  void os_timer_init();
+.\OS_Core\os_core.h(116): warning:  #1-D: last line of file ends without a newline
+  #endif // DEBUG
+.\vfs\vfs.h(31): warning:  #1295-D: Deprecated declaration vfs_init - give arg types
+  void vfs_init();
+driver\uart_driver.h(14): warning:  #1-D: last line of file ends without a newline
+  #endif // !UART_DRIVER 
+driver\uart_driver.c(213): warning:  #223-D: function "SEGGER_RTT_printf" declared implicitly
+      SEGGER_RTT_printf(0,"uart open");
+driver\uart_driver.c(294): warning:  #513-D: a value of type "int (*)(os_device_t *)" cannot be assigned to an entity of type "int (*)(struct os_device *, uint16_t)"
+              uart_device[i].close        = uart_close;
+driver\uart_driver.c(303): warning:  #1-D: last line of file ends without a newline
+  }
+driver\uart_driver.c: 9 warnings, 0 errors
+compiling system_stm32f10x.c...
+compiling mq_driver.c...
+.\OS_Port\os_port.h(13): warning:  #1295-D: Deprecated declaration os_port_systick_init - give arg types
+  void os_port_systick_init();
+.\OS_Core\os_core.h(110): warning:  #1295-D: Deprecated declaration os_system_info - give arg types
+  void os_system_info();
+.\OS_Core\os_core.h(112): warning:  #1295-D: Deprecated declaration os_timer_init - give arg types
+  void os_timer_init();
+.\OS_Core\os_core.h(116): warning:  #1-D: last line of file ends without a newline
+  #endif // DEBUG
+.\vfs\vfs.h(31): warning:  #1295-D: Deprecated declaration vfs_init - give arg types
+  void vfs_init();
+driver\mq_driver.h(16): warning:  #1-D: last line of file ends without a newline
+  #endif
+driver\mq_driver.c(64): warning:  #513-D: a value of type "int (*)(os_device_t *)" cannot be assigned to an entity of type "int (*)(struct os_device *, uint16_t)"
+              mq_device[i].close        = mq_close;
+driver\mq_driver.c(74): warning:  #1-D: last line of file ends without a newline
+  }
+driver\mq_driver.c: 8 warnings, 0 errors
+compiling led_driver.c...
+.\OS_Port\os_port.h(13): warning:  #1295-D: Deprecated declaration os_port_systick_init - give arg types
+  void os_port_systick_init();
+.\OS_Core\os_core.h(110): warning:  #1295-D: Deprecated declaration os_system_info - give arg types
+  void os_system_info();
+.\OS_Core\os_core.h(112): warning:  #1295-D: Deprecated declaration os_timer_init - give arg types
+  void os_timer_init();
+.\OS_Core\os_core.h(116): warning:  #1-D: last line of file ends without a newline
+  #endif // DEBUG
+.\vfs\vfs.h(31): warning:  #1295-D: Deprecated declaration vfs_init - give arg types
+  void vfs_init();
+driver\led_driver.c(44): warning:  #188-D: enumerated type mixed with another type
+          GPIO_WriteBit(led->gpiox, led->pin, led->act_value == 1);
+driver\led_driver.c(47): warning:  #188-D: enumerated type mixed with another type
+          GPIO_WriteBit(led->gpiox, led->pin, led->act_value == 0);
+driver\led_driver.c(58): warning:  #188-D: enumerated type mixed with another type
+              GPIO_WriteBit(led->gpiox, led->pin, led->act_value == 0);
+driver\led_driver.c(61): warning:  #188-D: enumerated type mixed with another type
+              GPIO_WriteBit(led->gpiox, led->pin, led->act_value == 1);
+driver\led_driver.c(74): warning:  #188-D: enumerated type mixed with another type
+          GPIO_WriteBit(led->gpiox, led->pin,  0);
+driver\led_driver.c(76): warning:  #188-D: enumerated type mixed with another type
+          GPIO_WriteBit(led->gpiox, led->pin, 1);
+driver\led_driver.c: 11 warnings, 0 errors
+compiling sw_iic.c...
+driver\sw_iic.h(12): warning:  #1-D: last line of file ends without a newline
+  #endif // SW_I2C_H
+driver\sw_iic.c(81): warning:  #1-D: last line of file ends without a newline
+  }
+driver\sw_iic.c: 2 warnings, 0 errors
+compiling oled_driver.c...
+driver\oled_driver.h(32): warning:  #1-D: last line of file ends without a newline
+  #endif // OLED_DRIVER_H
+driver\sw_iic.h(12): warning:  #1-D: last line of file ends without a newline
+  #endif // SW_I2C_H
+.\OS_Port\os_port.h(13): warning:  #1295-D: Deprecated declaration os_port_systick_init - give arg types
+  void os_port_systick_init();
+.\OS_Core\os_core.h(110): warning:  #1295-D: Deprecated declaration os_system_info - give arg types
+  void os_system_info();
+.\OS_Core\os_core.h(112): warning:  #1295-D: Deprecated declaration os_timer_init - give arg types
+  void os_timer_init();
+.\OS_Core\os_core.h(116): warning:  #1-D: last line of file ends without a newline
+  #endif // DEBUG
+.\vfs\vfs.h(31): warning:  #1295-D: Deprecated declaration vfs_init - give arg types
+  void vfs_init();
+driver\oled_driver.c(256): warning:  #513-D: a value of type "int (*)(os_device_t *)" cannot be assigned to an entity of type "int (*)(struct os_device *, uint16_t)"
+      oled_device.close        = oled_close;
+driver\oled_driver.c(267): warning:  #1-D: last line of file ends without a newline
+  }
+driver\oled_driver.c: 9 warnings, 0 errors
+compiling iap_protocol.c...
+driver\flash_iap.h(22): warning:  #1-D: last line of file ends without a newline
+  #endif
+.\OS_Port\os_port.h(13): warning:  #1295-D: Deprecated declaration os_port_systick_init - give arg types
+  void os_port_systick_init();
+.\OS_Core\os_core.h(110): warning:  #1295-D: Deprecated declaration os_system_info - give arg types
+  void os_system_info();
+.\OS_Core\os_core.h(112): warning:  #1295-D: Deprecated declaration os_timer_init - give arg types
+  void os_timer_init();
+.\OS_Core\os_core.h(116): warning:  #1-D: last line of file ends without a newline
+  #endif // DEBUG
+.\vfs\vfs.h(31): warning:  #1295-D: Deprecated declaration vfs_init - give arg types
+  void vfs_init();
+driver\uart_driver.h(14): warning:  #1-D: last line of file ends without a newline
+  #endif // !UART_DRIVER 
+driver\iap_protocol.c(186): warning:  #223-D: function "vm_unload_apps" declared implicitly
+      vm_unload_apps();
+driver\iap_protocol.c(231): warning:  #870-D: invalid multibyte character sequence
+      SEGGER_RTT_printf(0, "[IAP] data @%08x -> 映射�? @%08x\r\n", f->addr, real_write_addr);
+driver\iap_protocol.c(258): warning:  #870-D: invalid multibyte character sequence
+      SEGGER_RTT_printf(0, "[IAP] finish ok, 升级至版�? %d\r\n", g_version);
+driver\iap_protocol.c(261): warning:  #223-D: function "vm_load_apps" declared implicitly
+      vm_load_apps(g_target_addr);
+driver\iap_protocol.c: 11 warnings, 0 errors
+compiling os_port.c...
+OS_Port\os_port.h(13): warning:  #1295-D: Deprecated declaration os_port_systick_init - give arg types
+  void os_port_systick_init();
+.\OS_Core\os_core.h(110): warning:  #1295-D: Deprecated declaration os_system_info - give arg types
+  void os_system_info();
+.\OS_Core\os_core.h(112): warning:  #1295-D: Deprecated declaration os_timer_init - give arg types
+  void os_timer_init();
+.\OS_Core\os_core.h(116): warning:  #1-D: last line of file ends without a newline
+  #endif // DEBUG
+OS_Port\os_port.c(10): warning:  #1-D: last line of file ends without a newline
+  }
+OS_Port\os_port.c: 5 warnings, 0 errors
+compiling misc.c...
+compiling stm32f10x_bkp.c...
+compiling stm32f10x_adc.c...
+compiling stm32f10x_cec.c...
+compiling stm32f10x_crc.c...
+compiling stm32f10x_can.c...
+compiling stm32f10x_dac.c...
+compiling stm32f10x_dbgmcu.c...
+compiling stm32f10x_dma.c...
+compiling stm32f10x_exti.c...
+compiling stm32f10x_flash.c...
+compiling stm32f10x_fsmc.c...
+compiling stm32f10x_gpio.c...
+compiling stm32f10x_i2c.c...
+compiling stm32f10x_iwdg.c...
+assembling os_port.s...
+compiling Delay.c...
+compiling stm32f10x_pwr.c...
+compiling stm32f10x_rtc.c...
+compiling stm32f10x_spi.c...
+compiling stm32f10x_sdio.c...
+compiling stm32f10x_rcc.c...
+compiling stm32f10x_wwdg.c...
+compiling stm32f10x_usart.c...
+compiling stm32f10x_tim.c...
+compiling stm32f10x_it.c...
+compiling main.c...
+.\OS_Port\os_port.h(13): warning:  #1295-D: Deprecated declaration os_port_systick_init - give arg types
+  void os_port_systick_init();
+.\OS_Core\os_core.h(110): warning:  #1295-D: Deprecated declaration os_system_info - give arg types
+  void os_system_info();
+.\OS_Core\os_core.h(112): warning:  #1295-D: Deprecated declaration os_timer_init - give arg types
+  void os_timer_init();
+.\OS_Core\os_core.h(116): warning:  #1-D: last line of file ends without a newline
+  #endif // DEBUG
+.\vfs\vfs.h(31): warning:  #1295-D: Deprecated declaration vfs_init - give arg types
+  void vfs_init();
+.\driver\uart_driver.h(14): warning:  #1-D: last line of file ends without a newline
+  #endif // !UART_DRIVER 
+.\vm\vm_isa.h(71): warning:  #1-D: last line of file ends without a newline
+  #endif // !VM_ISA_H
+.\vm\vm_task.h(39): warning:  #1295-D: Deprecated declaration vm_unload_apps - give arg types
+  void vm_unload_apps();
+.\vm\vm_task.h(41): warning:  #1295-D: Deprecated declaration vm_load_apps - give arg types
+  void vm_load_apps();
+.\vm\vm_task.h(42): warning:  #1295-D: Deprecated declaration vm_find_apps - give arg types
+   void vm_find_apps();
+.\driver\oled_driver.h(32): warning:  #1-D: last line of file ends without a newline
+  #endif // OLED_DRIVER_H
+User\main.c(332): warning:  #870-D: invalid multibyte character sequence
+      SEGGER_RTT_printf(0, "\r\n[SYS] 开机动态校准完成！最大空闲手�?: %d �?/秒\r\n", os_idle_max);
+User\main.c(332): warning:  #870-D: invalid multibyte character sequence
+      SEGGER_RTT_printf(0, "\r\n[SYS] 开机动态校准完成！最大空闲手�?: %d �?/秒\r\n", os_idle_max);
+.\driver\mq_driver.h(16): warning:  #1-D: last line of file ends without a newline
+  #endif
+User\main.c(406): warning:  #1-D: last line of file ends without a newline
+  }
+User\main.c: 15 warnings, 0 errors
+compiling os_core.c...
+.\OS_Port\os_port.h(13): warning:  #1295-D: Deprecated declaration os_port_systick_init - give arg types
+  void os_port_systick_init();
+OS_Core\os_core.h(110): warning:  #1295-D: Deprecated declaration os_system_info - give arg types
+  void os_system_info();
+OS_Core\os_core.h(112): warning:  #1295-D: Deprecated declaration os_timer_init - give arg types
+  void os_timer_init();
+OS_Core\os_core.h(116): warning:  #1-D: last line of file ends without a newline
+  #endif // DEBUG
+OS_Core\os_core.c(331): warning:  #223-D: function "SEGGER_RTT_WriteString" declared implicitly
+      SEGGER_RTT_WriteString(0, "\x1B[2J\x1B[H");
+OS_Core\os_core.c(332): warning:  #223-D: function "SEGGER_RTT_printf" declared implicitly
+      SEGGER_RTT_printf(0, "========================================================\r\n");
+OS_Core\os_core.c: 6 warnings, 0 errors
+linking...
+Program Size: Code=13576 RO-data=1212 RW-data=144 ZI-data=8360  
+".\Objects\Project.axf" - 0 Error(s), 111 Warning(s).
 
 <h2>Collection of Component include folders:</h2>
   .\RTE\_Target_1
   C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>

@@ -8,12 +8,14 @@
     "CLASSES": {
         "led": { "ON": 1, "OFF": 0, "TOGGLE": 2 },
         "mq": { "WRITE": 4, "READ": 5 },
-        "uart": { "WRITE": 4, "READ": 5 } 
+        "uart": { "WRITE": 4, "READ": 5 },
+        "oled": { "UPDATE_SCREEN": 1, "CLEAR_BUFFER": 2 }
     },
     "BINDINGS": {
         "sys_led": "led",
         "led": "led",
         "mq_app": "mq",
-        "uart": "uart"
+        "uart": "uart",
+        "oled": "oled"
     }
 }

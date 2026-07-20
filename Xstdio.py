@@ -488,7 +488,6 @@
 # # 启动初始化
 # auto_init_configs()
 # root.mainloop()
-
 import tkinter as tk
 from tkinter import messagebox, ttk, filedialog
 import json
@@ -582,6 +581,37 @@ ENDWHILE
 # 循环结束，关闭LED
 led1 OFF
 u1 WRITE "Loop Finished!\\r\\n"
+""",
+    "5. 进阶：子程序与位运算": """APP0:
+OPEN sys_led AS led1
+OPEN sys_uart AS u1
+
+# 测试位运算: R2 = 1 << 3 (即等于 8)
+R0 = 1
+R1 = 3
+R2 = R0 << R1 
+
+LABEL loop
+u1 WRITE "Calling subroutine...\\r\\n"
+
+# 调用子程序，执行双闪灯效果
+CALL blink_twice
+
+DELAY 1000
+JUMP loop
+
+# ================================
+# 以下为子程序区域
+# ================================
+LABEL blink_twice
+led1 ON
+DELAY 100
+led1 OFF
+DELAY 100
+led1 ON
+DELAY 100
+led1 OFF
+RET
 """
 }
 
@@ -666,7 +696,7 @@ class IAP_Host:
         if not self.send_frame(CMD_START, 4, 0, total_crc, start_data):
             log_gui("[-] START 帧失败！")
             return
-
+        time.sleep(0.2)
         offset = 0
         while offset < total_size:
             chunk = firmware[offset : offset + IAP_DATA_MAX]
@@ -783,6 +813,7 @@ def do_compile():
 
         for line in raw_text.splitlines():
             line = line.strip().replace("->", " ").replace(",", " ")
+            line = line.replace("<<", " LSHIFT ").replace(">>", " RSHIFT ")
             if not line or line.startswith('#') or line.startswith(';'): continue
             
             tokens = shlex.split(line)
@@ -804,6 +835,16 @@ def do_compile():
                         expanded_lines.append(f"ADD {dest} {src1} {src2}")
                     elif operator == "-": 
                         expanded_lines.append(f"SUB {dest} {src1} {src2}")
+                    elif operator == "&": 
+                        expanded_lines.append(f"AND {dest} {src1} {src2}")
+                    elif operator == "|": 
+                        expanded_lines.append(f"OR {dest} {src1} {src2}")
+                    elif operator == "^": 
+                        expanded_lines.append(f"XOR {dest} {src1} {src2}")
+                    elif operator == "LSHIFT": 
+                        expanded_lines.append(f"LSHIFT {dest} {src1} {src2}")
+                    elif operator == "RSHIFT": 
+                        expanded_lines.append(f"RSHIFT {dest} {src1} {src2}")
                 continue
 
             op = tokens[0].upper()
@@ -939,7 +980,7 @@ def do_compile():
                     reg2 = args[1] if len(args) > 1 else 0
                 elif op in OPCODES:
                     opcode_val = OPCODES[op]
-                    if op in ["JUMP", "JEQ", "JNE", "JGT", "JLT"]: 
+                    if op in ["JUMP", "JEQ", "JNE", "JGT", "JLT", "CALL"]: 
                         reg0 = labels[args[0]] - pc
                     else: 
                         reg0 = args[0] if len(args) > 0 else 0
@@ -947,7 +988,7 @@ def do_compile():
                         reg2 = args[2] if len(args) > 2 else 0
                 else: raise ValueError(f"未知指令或对象: {op}")
                 machine_code.append(struct.pack('<iiii', opcode_val, reg0, reg1, reg2)); pc += 16
-            # apps_bin_data_list.append(b"".join(machine_code) + b"".join(string_data))
+
             # 将指令和字符串合并
             raw_app_bin = b"".join(machine_code) + b"".join(string_data)
             

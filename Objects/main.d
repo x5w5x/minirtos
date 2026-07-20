@@ -40,7 +40,7 @@
 .\objects\main.o: .\driver\led_driver.h
 .\objects\main.o: .\driver\uart_driver.h
 .\objects\main.o: .\driver\iap_protocol.h
-.\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-.\objects\main.o: .\vm\vm_isa.h
 .\objects\main.o: .\vm\vm_task.h
+.\objects\main.o: .\vm\vm_isa.h
+.\objects\main.o: .\driver\oled_driver.h
 .\objects\main.o: .\driver\mq_driver.h

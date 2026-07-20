@@ -11,14 +11,17 @@ static void do_syscall(vm_app_context_t *ctx, vm_inst_t *inst)
             const char *dev_name   = (const char *)(ctx->bytecode + inst->reg[2]);
             int fd                 = vfs_open(dev_name);
             ctx->reg[inst->reg[1]] = fd;
-            ctx->wait_fd = fd;
+            if (fd >= 0 && ctx->fd_count < 8) {
+                ctx->fd_table[ctx->fd_count++] = fd;
+            }
+            ctx->wait_fd           = fd;
 
             break;
         }
         case SYS_VFS_IOCTL: {
             int fd  = ctx->reg[inst->reg[1]];
             int cmd = inst->reg[2];
-            int ret = vfs_ioctl(fd, cmd, NULL);
+            int ret = vfs_ioctl(fd, cmd, (void*)&ctx->reg[inst->reg[1]]);
             break;
         }
         case SYS_VFS_WRITE: {
@@ -32,14 +35,14 @@ static void do_syscall(vm_app_context_t *ctx, vm_inst_t *inst)
             int *dest_reg = &ctx->reg[inst->reg[2]];
             int ret       = vfs_read(fd, 0, dest_reg, sizeof(int));
             if (ret <= 0) {
-                ctx->state   = 2;
+                ctx->state = 2;
                 ctx->pc -= 16;
             }
             break;
         }
         case SYS_VFS_CLOSE: {
-            int fd  = ctx->reg[inst->reg[1]];
-            int ret = vfs_close(fd);
+            int fd                 = ctx->reg[inst->reg[1]];
+            int ret                = vfs_close(fd);
             ctx->reg[inst->reg[1]] = ret; // 返回执行结果给 App
             break;
         }
@@ -106,6 +109,35 @@ void vm_run(vm_app_context_t *ctx)
                 if (ctx->reg[15] == -1)
                     ctx->pc += (inst->reg[0] - 16);
                 break;
+            case op_and:
+                ctx->reg[inst->reg[0]] = ctx->reg[inst->reg[1]] & ctx->reg[inst->reg[2]];
+                break;
+            case op_or:
+                ctx->reg[inst->reg[0]] = ctx->reg[inst->reg[1]] | ctx->reg[inst->reg[2]];
+                break;
+            case op_xor:
+                ctx->reg[inst->reg[0]] = ctx->reg[inst->reg[1]] ^ ctx->reg[inst->reg[2]];
+                break;
+            case op_lshift:
+                ctx->reg[inst->reg[0]] = ctx->reg[inst->reg[1]] << ctx->reg[inst->reg[2]];
+                break;
+            case op_rshift:
+                ctx->reg[inst->reg[0]] = ctx->reg[inst->reg[1]] >> ctx->reg[inst->reg[2]];
+                break;
+                case op_call:
+                if(ctx->sp <8){
+                    ctx->call_stack[ctx->sp++] =ctx->pc;
+                    ctx->pc +=(inst->reg[0] - 16);;
+                }else{
+                    ctx->state=0;
+                }
+                break;
+                case op_ret:
+                if(ctx->sp >0)
+                ctx->pc =ctx->call_stack[--ctx->sp];
+                else ctx->state=0;
+                break;
+
             default:
                 ctx->is_run = 0;
                 break;
