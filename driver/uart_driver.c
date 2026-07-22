@@ -228,14 +228,17 @@ int uart_read(os_device_t *dev, uint32_t pos, void *buffer, uint32_t size)
 {
     uint8_t *buf = (uint8_t *)buffer;
     uart_driver_t *uart = (uart_driver_t *)dev->private_data;
-
-    // 如果不是 USART1（比如 USART2 没有环形缓冲），仍然走原来的死等逻辑
     if (uart->uartx != USART1) {
-        for (uint32_t i = 0; i < size; i++) {
-            while (USART_GetFlagStatus(uart->uartx, USART_FLAG_RXNE) == RESET);
-            buf[i] = USART_ReceiveData(uart->uartx);
-        }
+      
+            while (USART_GetFlagStatus(uart->uartx, USART_FLAG_RXNE) == RESET){
+                os_delay(10);
+            }
+        
+        uint32_t *reg = (uint32_t *)buffer;
+        *reg = USART_ReceiveData(uart->uartx);
+        
         return size;
+        
     }
 
     // USART1 走高性能环形缓冲 + os_delay 让出 CPU！

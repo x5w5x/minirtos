@@ -1,16 +1,16 @@
 /*
  * @Author: 轩
  * @Date: 2026-07-15 21:54:49
- * @LastEditTime: 2026-07-15 22:48:37
+ * @LastEditTime: 2026-07-20 13:58:46
  * @FilePath: \minirtos\driver\led_driver.c
  */
 #include "led_driver.h"
-#define LED_MAX_NUM 4
+#define LED_MAX_NUM 2
 
 typedef struct {
     GPIO_TypeDef *gpiox;
     uint16_t pin;
-    int is_used;
+    uint8_t is_used;
     uint8_t act_value;
 } led_driver_t;
 

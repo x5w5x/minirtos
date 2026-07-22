@@ -1,7 +1,7 @@
 /*
  * @Author: 轩
  * @Date: 2026-07-19 16:39:09
- * @LastEditTime: 2026-07-19 16:53:12
+ * @LastEditTime: 2026-07-21 10:47:22
  * @FilePath: \minirtos\driver\oled_driver.h
  */
 #ifndef OLED_DRIVER_H
@@ -14,6 +14,7 @@
 #define OLED_IOC_CLEAR_BUFFER   0x02  // 清空内存缓冲
 #define OLED_IOC_DRAW_POINT     0x03  // 画点 (需传入 oled_point_t)
 #define OLED_IOC_DRAW_STRING    0x04
+#define OLED_IOC_PRINT_INT     0x05
 // 画点坐标结构体
 typedef struct {
     uint8_t x;

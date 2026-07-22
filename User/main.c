@@ -351,25 +351,9 @@ void Task_Start(void *param)
         
     //     os_task_ready(&Clone_TCBs[i]);
     // }
-    
-
-	int fd = vfs_open("oled");
-	oled_string_t str1 = { .x = 0, .y = 0,  .str = "MiniRTOS Boot..." };
-    oled_string_t str2 = { .x = 0, .y = 16, .str = "Version: 1.0.0" };
-    oled_string_t str3 = { .x = 0, .y = 32, .str = "VFS Mount: OK" };
-    
-    // 清空内存缓冲
-    vfs_ioctl(fd, OLED_IOC_CLEAR_BUFFER, NULL);
-    
-    // 写入三行字符到缓冲
-    vfs_ioctl(fd, OLED_IOC_DRAW_STRING, &str1);
-    vfs_ioctl(fd, OLED_IOC_DRAW_STRING, &str2);
-    vfs_ioctl(fd, OLED_IOC_DRAW_STRING, &str3);
-    
-    // 瞬间推流刷屏！
-    vfs_ioctl(fd, OLED_IOC_UPDATE_SCREEN, NULL);
-	
+   
     while (1) {
+
         os_system_info(); 
         os_delay(2000);   
     }
@@ -377,6 +361,9 @@ void Task_Start(void *param)
 
 os_timer_t my_test_timer;
 #include "mq_driver.h"
+#include "pwm_driver.h"
+#include "adc_driver.h"
+#include "key_driver.h"
 int main(void)
 {
 
@@ -388,6 +375,11 @@ int main(void)
     uart_register("sys_uart",USART1,115200);
     uart_register("uart",USART2,9600);
     oled_register("oled");
+	pwm_register("pwm_led", TIM2, 1, 1000, 71);
+	
+    adc_register("adc_pot", ADC1, 1, ADC_SampleTime_55Cycles5);
+	key_register("key1", GPIOA, GPIO_Pin_1, 0, 1);
+
    
     os_sched_init();
     os_msg_init(&my_queue, my_queue_pool, sizeof(sensor_msg_t), MAX_MSGS);

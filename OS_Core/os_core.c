@@ -29,6 +29,9 @@ void os_idle_task(void *param)
         os_idle_count++;
     }
 }
+uint32_t os_tick_get(){
+return os_sys_tick;
+}
 /*任务创建*/
 void os_task_create(os_tcb_t *tcb, const char *name, void (*task_func)(void *), void *param, uint32_t *stack_base, uint32_t stack_size, uint8_t prio, uint32_t time_slice)
 {

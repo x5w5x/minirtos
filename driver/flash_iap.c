@@ -1,12 +1,12 @@
 /*
  * @Author: 轩
  * @Date: 2026-07-17 19:05:27
- * @LastEditTime: 2026-07-20 13:15:58
+ * @LastEditTime: 2026-07-20 14:18:18
  * @FilePath: \minirtos\driver\flash_iap.c
  */
 #include "flash_iap.h"
 #include "stm32f10x_flash.h"
-__attribute__((section(".ramfunc")))
+
 static int is_address_safe(uint32_t addr, uint32_t size) {
     if (addr < APP_START_ADDR || (addr + size) > (APP_START_ADDR + APP_MAX_SIZE)) {
         return 0; 
@@ -21,7 +21,7 @@ void flash_iap_init(void) {
     FLASH_ClearFlag(FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPRTERR);
     FLASH_Lock();
 }
-__attribute__((section(".ramfunc")))
+
 int flash_iap_erase(uint32_t addr, uint32_t size) {
     if (!is_address_safe(addr, size)) return -1;
 
@@ -41,7 +41,7 @@ int flash_iap_erase(uint32_t addr, uint32_t size) {
     FLASH_Lock();
     return 0;
 }
-__attribute__((section(".ramfunc")))
+
 int flash_iap_write(uint32_t addr, uint8_t *data, uint32_t size) {
     if (!is_address_safe(addr, size)) return -3;
 

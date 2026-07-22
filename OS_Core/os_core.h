@@ -1,7 +1,7 @@
 /*
  * @Author: 轩
  * @Date: 2026-05-17 16:16:17
- * @LastEditTime: 2026-07-12 21:20:57
+ * @LastEditTime: 2026-07-21 12:00:26
  * @FilePath: \minirtos\OS_Core\os_core.h
  */
 #ifndef OS_CORE_H
@@ -93,7 +93,7 @@ void os_start(void);
 void os_delay(uint32_t ticks);
 void os_tick_handler(void);
 void os_idle_task(void *param);
-
+uint32_t os_tick_get(void);
 // ==================== 信号量 ====================
 void os_sem_init(os_sem_t *sem, uint8_t value);
 void os_sem_take(os_sem_t *sem);

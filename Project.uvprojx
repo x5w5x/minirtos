@@ -366,7 +366,7 @@
             <TextAddressRange>0x08000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile></ScatterFile>
+            <ScatterFile>.\Objects\Project.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc></Misc>
@@ -420,11 +420,6 @@
               <FilePath>.\minirtos\os_core.c</FilePath>
             </File>
             <File>
-              <FileName>os_port.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>.\minirtos\os_port.s</FilePath>
-            </File>
-            <File>
               <FileName>Serial.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\System\Serial.c</FilePath>
@@ -463,16 +458,6 @@
               <FileName>SEGGER_RTT_printf.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\User\SEGGER_RTT_printf.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_port.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\OS_Port\os_port.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_port.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\OS_Port\os_port.h</FilePath>
             </File>
             <File>
               <FileName>vfs.c</FileName>
@@ -573,6 +558,21 @@
               <FileName>sw_iic.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\driver\sw_iic.h</FilePath>
+            </File>
+            <File>
+              <FileName>os_port.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\OS_Port\os_port.c</FilePath>
+            </File>
+            <File>
+              <FileName>pwm_driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\driver\pwm_driver.c</FilePath>
+            </File>
+            <File>
+              <FileName>pwm_driver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\driver\pwm_driver.h</FilePath>
             </File>
           </Files>
         </Group>

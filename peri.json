@@ -9,13 +9,19 @@
         "led": { "ON": 1, "OFF": 0, "TOGGLE": 2 },
         "mq": { "WRITE": 4, "READ": 5 },
         "uart": { "WRITE": 4, "READ": 5 },
-        "oled": { "UPDATE_SCREEN": 1, "CLEAR_BUFFER": 2 }
+        "oled": { "UPDATE_SCREEN": 1, "CLEAR_BUFFER": 2,"PRINT_INT": 5 },
+        "pwm": { "SET_DUTY": 2 },
+        "adc": { "READ": 5 },
+        "button": { "READ": 5 }
     },
     "BINDINGS": {
         "sys_led": "led",
         "led": "led",
         "mq_app": "mq",
         "uart": "uart",
-        "oled": "oled"
+        "oled": "oled",
+        "pwm_led": "pwm",
+        "adc_pot": "adc",
+        "key1": "button"
     }
 }

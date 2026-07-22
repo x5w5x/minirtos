@@ -90,7 +90,7 @@ static int iap_recv_frame(IAP_Frame_t *f)
 }
 extern uint32_t g_slot_index;
 extern uint32_t g_version;
-#define APP_SLOT_SIZE (2*1024)
+#define APP_SLOT_SIZE (1*1024)
 #define APP_SLOT_NUM  8
 #define APP_VERSION_OFFSET (APP_SLOT_SIZE - 4)
 /* ------------------------------------------------------------------ */

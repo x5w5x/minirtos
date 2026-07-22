@@ -14,14 +14,14 @@ static void do_syscall(vm_app_context_t *ctx, vm_inst_t *inst)
             if (fd >= 0 && ctx->fd_count < 8) {
                 ctx->fd_table[ctx->fd_count++] = fd;
             }
-            ctx->wait_fd           = fd;
+           
 
             break;
         }
         case SYS_VFS_IOCTL: {
             int fd  = ctx->reg[inst->reg[1]];
             int cmd = inst->reg[2];
-            int ret = vfs_ioctl(fd, cmd, (void*)&ctx->reg[inst->reg[1]]);
+            int ret = vfs_ioctl(fd, cmd, (void*)ctx->reg[0]);
             break;
         }
         case SYS_VFS_WRITE: {
@@ -36,6 +36,7 @@ static void do_syscall(vm_app_context_t *ctx, vm_inst_t *inst)
             int ret       = vfs_read(fd, 0, dest_reg, sizeof(int));
             if (ret <= 0) {
                 ctx->state = 2;
+                ctx->wait_fd           = fd;
                 ctx->pc -= 16;
             }
             break;

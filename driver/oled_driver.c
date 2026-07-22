@@ -241,6 +241,12 @@ static int oled_ioctl(os_device_t *dev, int cmd, void *args) {
             }
             break;
         }
+        case OLED_IOC_PRINT_INT:{
+            char num_buf[16];
+            int len = sprintf(num_buf, "%04d", (int)args);
+            oled_write(dev, 0, num_buf, len);
+            break;
+        }
         
         default: return -1;
     }
