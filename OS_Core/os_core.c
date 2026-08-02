@@ -5,8 +5,8 @@
 os_list_node_t os_delay_list_head;
 os_list_node_t os_global_task_list;
 os_tcb_t os_idle_task_tcb;
-uint32_t os_idle_task_stack[64];
-uint32_t os_timer_task_stack[128]; 
+uint32_t os_idle_task_stack[32];
+uint32_t os_timer_task_stack[64]; 
 os_tcb_t os_timer_task_tcb;
 os_list_node_t os_ready_queue[32];
 uint32_t os_ready_bitmap  = 0x00;
@@ -79,7 +79,7 @@ void os_sched_init(void)
     }
     os_list_init(&os_delay_list_head);
     os_list_init(&os_global_task_list);
-    os_task_create(&os_idle_task_tcb, "IDLE", os_idle_task, NULL, os_idle_task_stack, 64, 0, 0);
+    os_task_create(&os_idle_task_tcb, "IDLE", os_idle_task, NULL, os_idle_task_stack, 32, 0, 0);
     os_task_ready(&os_idle_task_tcb);
     os_timer_init();
 }
@@ -417,7 +417,7 @@ void os_timer_init()
                    os_timer_task,    
                    NULL,             
                    os_timer_task_stack, 
-                   128,              
+                   64,              
                    31,              
                    1);               
     os_task_ready(&os_timer_task_tcb);

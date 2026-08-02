@@ -1,7 +1,7 @@
 /*
  * @Author: 轩
  * @Date: 2026-07-21 10:04:08
- * @LastEditTime: 2026-07-21 10:05:24
+ * @LastEditTime: 2026-07-23 14:47:39
  * @FilePath: \minirtos\driver\adc_driver.c
  */
 
@@ -99,6 +99,7 @@ int adc_close(os_device_t *dev)
     adc_driver_t *adc = (adc_driver_t *)dev->private_data;
     ADC_Cmd(adc->adcx, DISABLE);
     return 0;
+    
 }
 
 // read: 零缓存直接读取，提高实时性

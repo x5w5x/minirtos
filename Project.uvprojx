@@ -51,7 +51,7 @@
           <OutputName>Project</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
-          <CreateHexFile>0</CreateHexFile>
+          <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
           <ListingPath>.\Listings\</ListingPath>
@@ -310,7 +310,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>4</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -332,7 +332,7 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>-Ospace</MiscControls>
               <Define>USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
               <IncludePath>.\Start;.\User;.\Library;.\System;.\minirtos;.\System;.\OS_Core;.\vfs;.\driver;.\vm;.\OS_Port</IncludePath>
@@ -385,11 +385,6 @@
               <FilePath>.\Start\startup_stm32f10x_md.s</FilePath>
             </File>
             <File>
-              <FileName>core_cm3.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Start\core_cm3.c</FilePath>
-            </File>
-            <File>
               <FileName>core_cm3.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Start\core_cm3.h</FilePath>
@@ -398,11 +393,6 @@
               <FileName>stm32f10x.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Start\stm32f10x.h</FilePath>
-            </File>
-            <File>
-              <FileName>system_stm32f10x.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Start\system_stm32f10x.c</FilePath>
             </File>
             <File>
               <FileName>system_stm32f10x.h</FileName>
@@ -415,21 +405,6 @@
               <FilePath>.\minirtos\mini_rtos.h</FilePath>
             </File>
             <File>
-              <FileName>os_core.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\minirtos\os_core.c</FilePath>
-            </File>
-            <File>
-              <FileName>Serial.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\System\Serial.c</FilePath>
-            </File>
-            <File>
-              <FileName>Serial.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\System\Serial.h</FilePath>
-            </File>
-            <File>
               <FileName>os_core.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\OS_Core\os_core.h</FilePath>
@@ -438,11 +413,6 @@
               <FileName>os_list.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\OS_Core\os_list.h</FilePath>
-            </File>
-            <File>
-              <FileName>SEGGER_RTT.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\User\SEGGER_RTT.c</FilePath>
             </File>
             <File>
               <FileName>SEGGER_RTT.h</FileName>
@@ -455,6 +425,81 @@
               <FilePath>.\User\SEGGER_RTT_Conf.h</FilePath>
             </File>
             <File>
+              <FileName>vfs.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\vfs\vfs.h</FilePath>
+            </File>
+            <File>
+              <FileName>led_driver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\driver\led_driver.h</FilePath>
+            </File>
+            <File>
+              <FileName>vm_isa.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\vm\vm_isa.h</FilePath>
+            </File>
+            <File>
+              <FileName>uart_driver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\driver\uart_driver.h</FilePath>
+            </File>
+            <File>
+              <FileName>vm_task.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\vm\vm_task.h</FilePath>
+            </File>
+            <File>
+              <FileName>mq_driver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\driver\mq_driver.h</FilePath>
+            </File>
+            <File>
+              <FileName>flash_iap.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\driver\flash_iap.h</FilePath>
+            </File>
+            <File>
+              <FileName>iap_protocol.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\driver\iap_protocol.h</FilePath>
+            </File>
+            <File>
+              <FileName>oled_driver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\driver\oled_driver.h</FilePath>
+            </File>
+            <File>
+              <FileName>sw_iic.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\driver\sw_iic.h</FilePath>
+            </File>
+            <File>
+              <FileName>pwm_driver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\driver\pwm_driver.h</FilePath>
+            </File>
+            <File>
+              <FileName>shell.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\OS_Core\shell.h</FilePath>
+            </File>
+            <File>
+              <FileName>adc_driver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\driver\adc_driver.h</FilePath>
+            </File>
+            <File>
+              <FileName>key_driver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\driver\key_driver.h</FilePath>
+            </File>
+            <File>
+              <FileName>SEGGER_RTT.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\SEGGER_RTT.c</FilePath>
+            </File>
+            <File>
               <FileName>SEGGER_RTT_printf.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\User\SEGGER_RTT_printf.c</FilePath>
@@ -465,19 +510,9 @@
               <FilePath>.\vfs\vfs.c</FilePath>
             </File>
             <File>
-              <FileName>vfs.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\vfs\vfs.h</FilePath>
-            </File>
-            <File>
               <FileName>led_driver.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\driver\led_driver.c</FilePath>
-            </File>
-            <File>
-              <FileName>led_driver.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\driver\led_driver.h</FilePath>
             </File>
             <File>
               <FileName>vm_isa.c</FileName>
@@ -485,19 +520,9 @@
               <FilePath>.\vm\vm_isa.c</FilePath>
             </File>
             <File>
-              <FileName>vm_isa.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\vm\vm_isa.h</FilePath>
-            </File>
-            <File>
               <FileName>uart_driver.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\driver\uart_driver.c</FilePath>
-            </File>
-            <File>
-              <FileName>uart_driver.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\driver\uart_driver.h</FilePath>
             </File>
             <File>
               <FileName>vm_task.c</FileName>
@@ -505,19 +530,9 @@
               <FilePath>.\vm\vm_task.c</FilePath>
             </File>
             <File>
-              <FileName>vm_task.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\vm\vm_task.h</FilePath>
-            </File>
-            <File>
               <FileName>mq_driver.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\driver\mq_driver.c</FilePath>
-            </File>
-            <File>
-              <FileName>mq_driver.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\driver\mq_driver.h</FilePath>
             </File>
             <File>
               <FileName>flash_iap.c</FileName>
@@ -525,19 +540,9 @@
               <FilePath>.\driver\flash_iap.c</FilePath>
             </File>
             <File>
-              <FileName>flash_iap.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\driver\flash_iap.h</FilePath>
-            </File>
-            <File>
               <FileName>iap_protocol.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\driver\iap_protocol.c</FilePath>
-            </File>
-            <File>
-              <FileName>iap_protocol.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\driver\iap_protocol.h</FilePath>
             </File>
             <File>
               <FileName>oled_driver.c</FileName>
@@ -545,24 +550,29 @@
               <FilePath>.\driver\oled_driver.c</FilePath>
             </File>
             <File>
-              <FileName>oled_driver.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\driver\oled_driver.h</FilePath>
-            </File>
-            <File>
               <FileName>sw_iic.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\driver\sw_iic.c</FilePath>
             </File>
             <File>
-              <FileName>sw_iic.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\driver\sw_iic.h</FilePath>
+              <FileName>adc_driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\driver\adc_driver.c</FilePath>
             </File>
             <File>
-              <FileName>os_port.c</FileName>
+              <FileName>key_driver.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\OS_Port\os_port.c</FilePath>
+              <FilePath>.\driver\key_driver.c</FilePath>
+            </File>
+            <File>
+              <FileName>core_cm3.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Start\core_cm3.c</FilePath>
+            </File>
+            <File>
+              <FileName>system_stm32f10x.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Start\system_stm32f10x.c</FilePath>
             </File>
             <File>
               <FileName>pwm_driver.c</FileName>
@@ -570,9 +580,14 @@
               <FilePath>.\driver\pwm_driver.c</FilePath>
             </File>
             <File>
-              <FileName>pwm_driver.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\driver\pwm_driver.h</FilePath>
+              <FileName>shell.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\OS_Core\shell.c</FilePath>
+            </File>
+            <File>
+              <FileName>os_port.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\OS_Port\os_port.c</FilePath>
             </File>
           </Files>
         </Group>

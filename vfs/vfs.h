@@ -1,3 +1,9 @@
+/*
+ * @Author: 轩
+ * @Date: 2026-07-12 21:44:02
+ * @LastEditTime: 2026-07-27 10:22:10
+ * @FilePath: \minirtos\vfs\vfs.h
+ */
 #ifndef VFS_H
 #define VFS_H
 
@@ -21,11 +27,8 @@ typedef struct os_device{
     int (*write)(struct os_device *dev,uint32_t pos,const void *bufferr,uint32_t size);
     int (*ioctl)(struct os_device *dev,int cmd,void *args);
     int (*close)(struct os_device *dev,uint16_t flag);
-
     os_list_node_t list_node;
-
     os_mutex_t mutex;
-
 } os_device_t;
 
 void vfs_init();
@@ -35,5 +38,6 @@ int vfs_write(int fd, uint32_t pos, const void *buffer, uint32_t size);
 int vfs_read(int fd, uint32_t pos, void *buffer, uint32_t size);
 int vfs_close(int fd);
 int vfs_ioctl(int fd, int cmd, void *args);
+
 #endif // !VFS_H
 

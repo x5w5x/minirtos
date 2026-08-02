@@ -313,6 +313,7 @@ void timer_test_callback(void *arg) {
 }
 #include "vm_task.h"
 #include "oled_driver.h"
+#include "shell.h"
 void Task_Start(void *param) 
 {
     
@@ -330,32 +331,16 @@ void Task_Start(void *param)
   
     os_is_calibrated = 1;
     SEGGER_RTT_printf(0, "\r\n[SYS] 开机动态校准完成！最大空闲手速: %d 圈/秒\r\n", os_idle_max);
-
- 
     os_task_create(&TaskB_TCB, "TaskB",Task_IAP, NULL, TaskB_Stack, 128, 21, 10);
-    //os_task_create(&TaskA_TCB, "TaskA", TaskA, NULL, TaskA_Stack, 256, 22, 1);
-    // os_task_create(&TaskC_TCB, "TaskC", TaskC, NULL, TaskC_Stack, 256, 21, 1);
- 
     os_task_create(&TaskC_TCB, "TaskC", vmtask, NULL, TaskC_Stack, 128, 21, 10);
     os_task_ready(&TaskB_TCB);
-    //os_task_ready(&TaskA_TCB);
     os_task_ready(&TaskC_TCB);
-    // for (int i = 0; i < CLONE_NUM; i++) {
-    //     char clone_name[16];
- 
-    //     snprintf(clone_name, sizeof(clone_name), "Clone_%d", i); 
-        
-
-    //     os_task_create(&Clone_TCBs[i], clone_name, Task_Clone, 
-    //                   (void *)i, Clone_Stacks[i], 128, 10 + i, 1);
-        
-    //     os_task_ready(&Clone_TCBs[i]);
-    // }
+    shell_init();
+  
    
     while (1) {
-
-        os_system_info(); 
-        os_delay(2000);   
+       shell_poll_rtt(); 
+        os_delay(20);   
     }
 }
 
@@ -375,10 +360,11 @@ int main(void)
     uart_register("sys_uart",USART1,115200);
     uart_register("uart",USART2,9600);
     oled_register("oled");
-	pwm_register("pwm_led", TIM2, 1, 1000, 71);
+	pwm_register("pwm_led", TIM3, 3, 1000, 71);
+    
 	
     adc_register("adc_pot", ADC1, 1, ADC_SampleTime_55Cycles5);
-	key_register("key1", GPIOA, GPIO_Pin_1, 0, 1);
+	key_register("key1", GPIOB, GPIO_Pin_13, 1, 0);
 
    
     os_sched_init();

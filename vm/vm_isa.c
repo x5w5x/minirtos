@@ -14,8 +14,6 @@ static void do_syscall(vm_app_context_t *ctx, vm_inst_t *inst)
             if (fd >= 0 && ctx->fd_count < 8) {
                 ctx->fd_table[ctx->fd_count++] = fd;
             }
-           
-
             break;
         }
         case SYS_VFS_IOCTL: {

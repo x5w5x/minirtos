@@ -1,7 +1,7 @@
 /*
  * @Author: 轩
  * @Date: 2026-07-12 21:43:55
- * @LastEditTime: 2026-07-14 19:02:24
+ * @LastEditTime: 2026-07-23 13:03:10
  * @FilePath: \minirtos\vfs\vfs.c
  */
 #include "vfs.h"
@@ -97,4 +97,28 @@ int vfs_ioctl(int fd, int cmd, void *args)
         }
     }
     return -1;
+}
+
+void vfs_list_devices(void)
+{
+    SEGGER_RTT_printf(0, "\r\nRegistered VFS Devices:\r\n");
+    SEGGER_RTT_printf(0, "-----------------------------\r\n");
+
+    os_list_node_t *curr = device_list_head.next;
+    int count = 0;
+
+    while (curr != &device_list_head && curr != NULL) {
+        // 使用你现有的 container_of 宏
+        os_device_t *dev = container_of(curr, os_device_t, list_node);
+
+        // 打印设备 index 和设备名字 (比如 dev->name)
+        SEGGER_RTT_printf(0, " [%d] %s\r\n", count++, dev->name);
+
+        curr = curr->next;
+    }
+
+    if (count == 0) {
+        SEGGER_RTT_printf(0, " (No devices registered)\r\n");
+    }
+    SEGGER_RTT_printf(0, "-----------------------------\r\n");
 }

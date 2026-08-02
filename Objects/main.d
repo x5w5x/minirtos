@@ -43,6 +43,7 @@
 .\objects\main.o: .\vm\vm_task.h
 .\objects\main.o: .\vm\vm_isa.h
 .\objects\main.o: .\driver\oled_driver.h
+.\objects\main.o: .\OS_Core\shell.h
 .\objects\main.o: .\driver\mq_driver.h
 .\objects\main.o: .\driver\pwm_driver.h
 .\objects\main.o: .\driver\adc_driver.h
